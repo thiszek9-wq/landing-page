@@ -5,17 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BLACKWELL AI SOLUTIONS</title>
     <meta name="description" content="BLACKWELL AI SOLUTIONS - Premium digital solutions for your business">
+
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Libre+Franklin:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Smooth scrolling -->
     <style>
+        html { scroll-behavior: smooth; }
+
         body { 
             font-family: 'Libre Franklin', ui-sans-serif, system-ui, sans-serif; 
         }
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Cormorant Garamond', ui-sans-serif, system-ui, sans-serif;
         }
+
         @keyframes fade-up {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -36,6 +45,7 @@
             0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
             50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6); }
         }
+
         .animate-fade-up {
             animation: fade-up 0.6s ease-out forwards;
             opacity: 0;
@@ -50,13 +60,33 @@
         }
     </style>
 </head>
+
 <body>
-    <!-- Header with logo top-right -->
-    <header class="flex justify-end items-center p-4 bg-white">
-        <img src="https://res.cloudinary.com/dxninzgnm/image/upload/v1770483640/REVAMP_Blackwell_A.i_Solutions_MainLogo_-2_z3lxus.png" 
-             alt="BLACKWELL AI Logo" 
-             class="h-12"> <!-- adjust h-12 to make logo bigger/smaller -->
-    </header>
+
+<!-- ✅ STICKY POLISHED HEADER -->
+<header id="main-header" class="sticky top-0 flex justify-between items-center p-4 bg-white bg-opacity-80 backdrop-blur-md shadow-md z-50 transition-all duration-300">
+
+    <!-- Company name -->
+    <div class="text-lg sm:text-xl font-bold text-gray-900">
+        BLACKWELL AI SOLUTIONS
+    </div>
+
+    <!-- Desktop nav -->
+    <nav class="hidden md:flex space-x-6">
+        <a href="#features" class="text-gray-700 hover:text-purple-700 transition">Features</a>
+        <a href="#pricing" class="text-gray-700 hover:text-purple-700 transition">Pricing</a>
+        <a href="#faq" class="text-gray-700 hover:text-purple-700 transition">FAQ</a>
+        <a href="#get-started" class="bg-purple-700 text-white px-4 py-2 rounded hover:bg-purple-800 transition">Get Started</a>
+    </nav>
+
+    <!-- Mobile button -->
+    <button id="mobile-menu-button" class="md:hidden">
+        <svg class="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+    </button>
+</header>
+<section id="features">
 
         .animate-float {
             animation: float 3s ease-in-out infinite;
