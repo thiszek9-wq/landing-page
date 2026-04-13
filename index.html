@@ -644,175 +644,150 @@ function toggleFaq(id) {
 </footer>
     
 <!-- ========================= -->
-<!-- 💬 AVA CHAT WIDGET (HUMANIZED) -->
+<!-- 💬 AVA CHAT WIDGET v2 -->
 <!-- ========================= -->
 
-<style>
-@keyframes pulse {
-    0% { transform: scale(1); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-    50% { transform: scale(1.08); box-shadow: 0 15px 35px rgba(0,0,0,0.45); }
-    100% { transform: scale(1); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-}
-
-.chat-float {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    background: #0a0a0a;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 99999;
-    font-size: 22px;
-    animation: pulse 2.5s infinite;
-}
-
-#chatBox {
-    display: none;
-    position: fixed;
-    bottom: 90px;
-    right: 20px;
-    width: 360px;
-    height: 500px;
-    background: white;
-    border-radius: 16px;
-    overflow: hidden;
-    z-index: 99999;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-    font-family: Arial;
-    transform: translateY(20px);
-    opacity: 0;
-    transition: all 0.25s ease;
-}
-
-#chatBox.open {
-    transform: translateY(0);
-    opacity: 1;
-}
-
-.user-msg {
-    text-align: right;
-    margin-bottom: 10px;
-}
-
-.bot-msg {
-    text-align: left;
-    margin-bottom: 10px;
-    color: #111;
-}
-
-.chat-input {
-    display: flex;
-    border-top: 1px solid #eee;
-}
-
-.chat-input input {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    outline: none;
-    font-size: 14px;
-}
-
-.chat-input button {
-    background: #0a0a0a;
-    color: #fff;
-    border: none;
-    padding: 12px 16px;
-    cursor: pointer;
-}
-</style>
-
 <!-- Floating Button -->
-<div class="chat-float" onclick="toggleChat()">💬</div>
+<div onclick="toggleChat()"
+style="position:fixed;bottom:20px;right:20px;width:60px;height:60px;background:#0a0a0a;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:99999;font-size:22px;box-shadow:0 10px 25px rgba(0,0,0,0.3);">
+💬
+</div>
 
 <!-- Chat Box -->
-<div id="chatBox">
+<div id="chatBox"
+style="display:none;position:fixed;bottom:90px;right:20px;width:340px;height:500px;background:white;border-radius:16px;overflow:hidden;z-index:99999;box-shadow:0 15px 40px rgba(0,0,0,0.25);font-family:Arial;">
 
-    <!-- Header -->
-    <div style="background:#0a0a0a;color:#fff;padding:14px;font-weight:700;">
-        Ava • Blackwell AI Assistant
-    </div>
+<!-- Header -->
+<div style="background:#0a0a0a;color:#fff;padding:12px 14px;font-weight:700;">
+Ava • Blackwell Assistant
+</div>
 
-    <!-- Messages -->
-    <div id="chatMessages" style="padding:12px;height:360px;overflow-y:auto;background:#fafafa;">
-        <div class="bot-msg">
-            <b>Ava:</b> Hey there 👋 I’m Ava. I’m here to help you explore Blackwell AI Solutions — whether that’s pricing, demos, or booking a consultation.
-        </div>
-    </div>
+<!-- Messages -->
+<div id="chatMessages"
+style="padding:10px;height:380px;overflow-y:auto;font-size:14px;background:#f6f7f9;">
 
-    <!-- Input -->
-    <div class="chat-input">
-        <input id="chatInput" placeholder="Type your message..." />
-        <button onclick="sendChat()">Send</button>
-    </div>
+<!-- Ava welcome message -->
+<div style="display:flex;justify-content:flex-start;margin-bottom:8px;">
+  <div style="background:#ffffff;padding:10px 12px;border-radius:14px;max-width:75%;box-shadow:0 1px 4px rgba(0,0,0,0.08);">
+    <b>Ava:</b> Hi 👋 I’m Ava. I can help with pricing, demos, services, or booking a consultation.
+  </div>
+</div>
 
 </div>
 
+<!-- Buttons -->
+<div style="display:flex;gap:6px;padding:8px;border-top:1px solid #eee;background:#fff;">
+<a href="mailto:inquiry@blackwellaisolutions.com"
+style="flex:1;text-align:center;background:#f3f4f6;color:#111;padding:8px;border-radius:10px;text-decoration:none;font-size:12px;font-weight:600;">
+📧 Email Us
+</a>
+
+<a href="https://calendly.com/bws-consultations"
+target="_blank"
+style="flex:1;text-align:center;background:#0a0a0a;color:#fff;padding:8px;border-radius:10px;text-decoration:none;font-size:12px;font-weight:600;">
+📅 Book Call
+</a>
+</div>
+
+<!-- Input -->
+<div style="display:flex;border-top:1px solid #eee;">
+<input id="chatInput" placeholder="Ask Ava something..."
+style="flex:1;padding:10px;border:none;outline:none;font-size:14px;">
+<button onclick="sendChat()"
+style="background:#0a0a0a;color:#fff;border:none;padding:10px 14px;cursor:pointer;">
+Send
+</button>
+</div>
+
+</div>
+
+<!-- Chat Logic -->
 <script>
 function toggleChat() {
     const box = document.getElementById('chatBox');
+    box.style.display = box.style.display === 'block' ? 'none' : 'block';
+}
 
-    if (box.classList.contains('open')) {
-        box.classList.remove('open');
-        setTimeout(() => box.style.display = 'none', 200);
-    } else {
-        box.style.display = 'block';
-        setTimeout(() => box.classList.add('open'), 10);
-    }
+function addMessage(sender, text, isUser=false) {
+    const messages = document.getElementById('chatMessages');
+
+    const wrapper = document.createElement('div');
+    wrapper.style.display = "flex";
+    wrapper.style.justifyContent = isUser ? "flex-end" : "flex-start";
+    wrapper.style.marginBottom = "8px";
+
+    const bubble = document.createElement('div');
+    bubble.style.maxWidth = "75%";
+    bubble.style.padding = "10px 12px";
+    bubble.style.borderRadius = "14px";
+    bubble.style.boxShadow = "0 1px 4px rgba(0,0,0,0.08)";
+    bubble.style.background = isUser ? "#0a0a0a" : "#ffffff";
+    bubble.style.color = isUser ? "#fff" : "#111";
+
+    bubble.innerHTML = "<b>" + sender + ":</b> " + text;
+
+    wrapper.appendChild(bubble);
+    messages.appendChild(wrapper);
+    messages.scrollTop = messages.scrollHeight;
+}
+
+function showTyping() {
+    const messages = document.getElementById('chatMessages');
+
+    const typing = document.createElement('div');
+    typing.id = "typing";
+    typing.style.fontSize = "12px";
+    typing.style.color = "#666";
+    typing.style.marginBottom = "8px";
+    typing.innerHTML = "Ava is typing...";
+
+    messages.appendChild(typing);
+    messages.scrollTop = messages.scrollHeight;
+}
+
+function removeTyping() {
+    const typing = document.getElementById('typing');
+    if (typing) typing.remove();
 }
 
 function sendChat() {
     const input = document.getElementById('chatInput');
-    const messages = document.getElementById('chatMessages');
-
     if (!input.value.trim()) return;
 
-    // User message
-    const user = document.createElement('div');
-    user.className = "user-msg";
-    user.innerHTML = "<b>You:</b> " + input.value;
-    messages.appendChild(user);
+    addMessage("You", input.value, true);
 
     let text = input.value.toLowerCase();
-    let reply = "";
-
-    // HUMANIZED AVA RESPONSES
-    if (text.includes("price") || text.includes("cost") || text.includes("pricing")) {
-        reply = "That’s a great question 👍 Pricing depends on what your business needs. If you’d like, I can help you find the right package or connect you with a consultation.";
-    }
-    else if (text.includes("demo")) {
-        reply = "Of course 😊 I can show you what we offer or guide you through a live demo depending on what you're looking for.";
-    }
-    else if (text.includes("contact") || text.includes("email")) {
-        reply = "You can always reach us at support@blackwellaisolutions.com — or if you prefer, I can help you book a call instead.";
-    }
-    else if (text.includes("book") || text.includes("call") || text.includes("consultation")) {
-        reply = "Perfect 👍 You can book a consultation here: <a href='https://calendly.com/bws-consultations' target='_blank'>Schedule a time</a> and we’ll take care of the rest.";
-    }
-    else if (text.includes("services")) {
-        reply = "We offer AI business tools, web design, SEO, automation systems, hosting, and digital growth solutions. What are you most interested in?";
-    }
-    else if (text.includes("who are you") || text.includes("what are you")) {
-        reply = "I’m Ava — your assistant here at Blackwell AI Solutions 😊 I help guide visitors through our services and connect them with the right solutions.";
-    }
-    else {
-        reply = "Got you 👍 Let me help with that — are you looking for pricing, demos, or to book a consultation?";
-    }
-
-    // Bot message
-    const bot = document.createElement('div');
-    bot.className = "bot-msg";
-    bot.innerHTML = "<b>Ava:</b> " + reply;
-    messages.appendChild(bot);
-
     input.value = "";
-    messages.scrollTop = messages.scrollHeight;
+
+    showTyping();
+
+    setTimeout(() => {
+        removeTyping();
+
+        let reply = "";
+
+        if (text.includes("price") || text.includes("pricing") || text.includes("cost")) {
+            reply = "Our pricing is tailored to your business. You can book a free consultation for a custom quote.";
+        }
+        else if (text.includes("demo")) {
+            reply = "Yes 👍 We can show live demos of our systems and tools anytime.";
+        }
+        else if (text.includes("contact") || text.includes("email")) {
+            reply = "You can reach us at inquiry@blackwellaisolutions.com or use the Email button below.";
+        }
+        else if (text.includes("book") || text.includes("consult") || text.includes("call")) {
+            reply = "You can book a consultation using the Book Call button below.";
+        }
+        else if (text.includes("services")) {
+            reply = "We offer AI tools, automation, web design, SEO, hosting, and business systems.";
+        }
+        else {
+            reply = "I can help with pricing, demos, services, or booking a consultation 😊";
+        }
+
+        addMessage("Ava", reply, false);
+
+    }, 900);
 }
 </script>
 
