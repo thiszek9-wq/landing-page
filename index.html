@@ -644,12 +644,12 @@ function toggleFaq(id) {
 </footer>
     
 <!-- ========================= -->
-<!-- 💬 BLACKWELL CHAT WIDGET (AVA - HYBRID LEAD VERSION) -->
+<!-- 💬 BLACKWELL CHAT WIDGET (AVA - SMART LINKS + FIXED FLOW) -->
 <!-- ========================= -->
 
 <div onclick="toggleChat()" 
 style="position:fixed;bottom:20px;right:20px;padding:12px 16px;background:#0a0a0a;color:#fff;border-radius:999px;display:flex;align-items:center;gap:8px;cursor:pointer;z-index:99999;font-size:14px;font-family:Arial;box-shadow:0 10px 25px rgba(0,0,0,0.3);">
-💬 Chat
+💬 Chat With Ava
 <span style="width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block;animation:pulse 1.5s infinite;"></span>
 </div>
 
@@ -766,6 +766,9 @@ function hideTyping() {
     if (t) t.remove();
 }
 
+/* =========================
+   SMART SUGGESTIONS (LINKS)
+========================= */
 function showSuggestions(items) {
     const box = document.getElementById("suggestions");
     box.innerHTML = "";
@@ -774,15 +777,38 @@ function showSuggestions(items) {
     items.forEach(i => {
         const b = document.createElement("button");
         b.className = "suggest-btn";
-        b.innerText = i.label;
+        b.innerHTML = i.label;
         b.onclick = () => {
-            document.getElementById("chatInput").value = i.value;
-            sendChat();
+            window.open(i.url || "#", "_blank");
         };
         box.appendChild(b);
     });
 }
 
+function showQuickLinks(type) {
+
+    if (type === "demo") {
+        showSuggestions([
+            { label: "▶ Open Demo", url: "https://bws.tools.blackwellaisolutions.com/demo" }
+        ]);
+    }
+
+    if (type === "pricing") {
+        showSuggestions([
+            { label: "💰 View Pricing Info", url: "https://calendly.com/bws-consultations" }
+        ]);
+    }
+
+    if (type === "book") {
+        showSuggestions([
+            { label: "📅 Book Call", url: "https://calendly.com/bws-consultations" }
+        ]);
+    }
+}
+
+/* =========================
+   ADD MESSAGE
+========================= */
 function addMessage(sender, text) {
     const box = document.getElementById("chatMessages");
 
@@ -814,24 +840,12 @@ function addMessage(sender, text) {
 }
 
 /* =========================
-   🔥 HYBRID EMAIL LEAD CAPTURE (OPTION A INSIDE C)
-========================= */
-function sendLeadEmail(name, email) {
-
-    const subject = encodeURIComponent("New Chat Lead - Ava Bot");
-    const body = encodeURIComponent(
-        `New Lead Captured:\n\nName: ${name}\nEmail: ${email}\nSource: Chat Widget`
-    );
-
-    window.location.href = `mailto:sales@blackwellaisolutions.com?subject=${subject}&body=${body}`;
-}
-
-/* =========================
-   FLOW HANDLER
+   FLOW LOCK FIX
 ========================= */
 function handleFlow(text) {
 
     if (chatState.mode !== "book") return false;
+    if (chatState.mode === "done") return true;
 
     if (!chatState.collected.name) {
         chatState.userName = text;
@@ -851,25 +865,25 @@ function handleFlow(text) {
         chatState.collected.email = true;
         localStorage.setItem("ava_email", text);
 
-        /* 🔥 SEND LEAD TO YOUR EMAIL (OPTION A) */
-        sendLeadEmail(chatState.userName, text);
-
         setTimeout(() => {
             hideTyping();
             addMessage("ava", `
                 Perfect ${chatState.userName}! 🎉<br><br>
-                Your request has been sent. We’ll reach out soon.<br><br>
+                We received your request. Our team will reach out soon.<br><br>
                 <a href="https://calendly.com/bws-consultations" target="_blank" style="color:#ef4444;font-weight:600;">Book Call</a>
             `);
         }, getDelay());
 
-        chatState.mode = "idle";
+        chatState.mode = "done";
         return true;
     }
 
     return false;
 }
 
+/* =========================
+   MAIN CHAT
+========================= */
 function sendChat() {
 
     const input = document.getElementById("chatInput");
@@ -877,35 +891,7 @@ function sendChat() {
     const text = raw.toLowerCase();
     if (!raw) return;
 
-    if (!chatState.collected.name) {
-        chatState.userName = raw;
-        chatState.collected.name = true;
-        localStorage.setItem("ava_name", raw);
-
-        showTyping();
-
-        setTimeout(() => {
-            hideTyping();
-            addMessage("ava", `Nice to meet you ${raw} 👋 How can I help?`);
-
-            showSuggestions([
-                { label: "Demo", value: "demo" },
-                { label: "Pricing", value: "pricing" },
-                { label: "Book", value: "book" }
-            ]);
-
-        }, getDelay());
-
-        input.value = "";
-        return;
-    }
-
     addMessage("user", raw);
-
-    if (handleFlow(raw)) {
-        input.value = "";
-        return;
-    }
 
     showTyping();
 
@@ -913,27 +899,24 @@ function sendChat() {
         hideTyping();
 
         if (text.includes("demo")) {
-            addMessage("ava", `Watch demo: <a href="https://bws.tools.blackwellaisolutions.com/demo" target="_blank" style="color:#ef4444;">Open</a>`);
+            addMessage("ava", `Here’s the demo 👇`);
+            showQuickLinks("demo");
         }
 
         else if (text.includes("pricing")) {
             addMessage("ava", "Pricing is custom based on your needs.");
+            showQuickLinks("pricing");
         }
 
-        else if (text.includes("book")) {
+        else if (text.includes("book") || text.includes("call")) {
             chatState.mode = "book";
-            addMessage("ava", chatState.collected.name ? "What email should we use?" : "What’s your name?");
+            addMessage("ava", "Let’s book a call 📅 What’s your name?");
+            showQuickLinks("book");
         }
 
         else {
             addMessage("ava", "I can help with demo, pricing, booking, and support.");
         }
-
-        showSuggestions([
-            { label: "Demo", value: "demo" },
-            { label: "Pricing", value: "pricing" },
-            { label: "Book", value: "book" }
-        ]);
 
     }, getDelay());
 
