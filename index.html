@@ -643,14 +643,13 @@ function toggleFaq(id) {
     </div>
 </footer>
     
-<!-- ========================= -->
-<!-- 💬 BLACKWELL CHAT WIDGET (AVA - PERSONA + CHAT STYLE UPGRADE) -->
+!-- ========================= -->
+<!-- 💬 BLACKWELL CHAT WIDGET (AVA - FINAL FRONTEND VERSION) -->
 <!-- ========================= -->
 
-<!-- Floating Button -->
 <div onclick="toggleChat()" 
-style="position:fixed;bottom:20px;right:20px;padding:12px 16px;background:#0a0a0a;color:#fff;border-radius:999px;display:flex;align-items:center;gap:8px;cursor:pointer;z-index:99999;font-size:14px;box-shadow:0 10px 25px rgba(0,0,0,0.3);font-family:Arial;">
-💬 Chat with Us
+style="position:fixed;bottom:20px;right:20px;padding:12px 16px;background:#0a0a0a;color:#fff;border-radius:999px;display:flex;align-items:center;gap:8px;cursor:pointer;z-index:99999;font-size:14px;font-family:Arial;box-shadow:0 10px 25px rgba(0,0,0,0.3);">
+💬 Chat
 <span style="width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block;animation:pulse 1.5s infinite;"></span>
 </div>
 
@@ -660,13 +659,44 @@ style="position:fixed;bottom:20px;right:20px;padding:12px 16px;background:#0a0a0
   50% { transform: scale(1.4); opacity:0.6; }
   100% { transform: scale(1); opacity:1; }
 }
+
+@keyframes popIn {
+  0% { transform: translateY(8px); opacity:0; }
+  100% { transform: translateY(0); opacity:1; }
+}
+
+.chat-typing {
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 5px 0 10px 10px;
+  font-style: italic;
+}
+
+#suggestions {
+  display:flex;
+  gap:6px;
+  padding:8px;
+  overflow-x:auto;
+  border-top:1px solid #1f2937;
+  background:#0a0f14;
+}
+
+.suggest-btn {
+  flex:0 0 auto;
+  padding:6px 10px;
+  font-size:12px;
+  border:1px solid #374151;
+  border-radius:20px;
+  background:#111827;
+  color:#e5e7eb;
+  cursor:pointer;
+}
 </style>
 
-<!-- Chat Box -->
 <div id="chatBox" 
-style="display:none;position:fixed;bottom:90px;right:20px;width:360px;max-width:92vw;height:520px;background:linear-gradient(to bottom,#0b0f14,#0a0a0a);border-radius:14px;overflow:hidden;z-index:99999;box-shadow:0 15px 40px rgba(0,0,0,0.5);font-family:Arial;flex-direction:column;">
+style="display:none;position:fixed;bottom:90px;right:20px;width:360px;max-width:92vw;height:540px;background:linear-gradient(to bottom,#0b0f14,#0a0a0a);border-radius:14px;overflow:hidden;z-index:99999;box-shadow:0 15px 40px rgba(0,0,0,0.5);font-family:Arial;flex-direction:column;">
 
-<!-- Header -->
+<!-- HEADER -->
 <div style="background:#0a0a0a;color:#fff;padding:12px 14px;font-weight:700;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1f2937;">
 <div>
 Ava • Blackwell AI Assistant
@@ -675,97 +705,120 @@ Ava • Blackwell AI Assistant
 <div onclick="toggleChat()" style="cursor:pointer;font-size:16px;">✕</div>
 </div>
 
-<!-- Messages -->
+<!-- MESSAGES -->
 <div id="chatMessages" 
 style="flex:1;padding:10px;overflow-y:auto;font-size:14px;color:#e5e7eb;">
 
 <div style="margin-bottom:10px;">
-Hi 👋 I can help you with demos, pricing, booking a consultation, FAQs, or support.
+Hi 👋 I can help you with demos, pricing, booking, FAQs, or support.
 </div>
 
 </div>
 
-<!-- Quick Buttons -->
-<div style="display:flex;gap:6px;padding:8px;border-top:1px solid #1f2937;background:#0a0f14;overflow-x:auto;">
+<!-- SUGGESTIONS -->
+<div id="suggestions" style="display:none;"></div>
 
-<button onclick="quickAction('demo')" style="flex:0 0 auto;padding:6px 10px;font-size:12px;border:1px solid #374151;border-radius:20px;background:#111827;color:#e5e7eb;">Demo</button>
-<button onclick="quickAction('pricing')" style="flex:0 0 auto;padding:6px 10px;font-size:12px;border:1px solid #374151;border-radius:20px;background:#111827;color:#e5e7eb;">Pricing</button>
-<button onclick="quickAction('book')" style="flex:0 0 auto;padding:6px 10px;font-size:12px;border:1px solid #374151;border-radius:20px;background:#111827;color:#e5e7eb;">Book Call</button>
-<button onclick="quickAction('email')" style="flex:0 0 auto;padding:6px 10px;font-size:12px;border:1px solid #374151;border-radius:20px;background:#111827;color:#e5e7eb;">Email</button>
-<button onclick="quickAction('faq')" style="flex:0 0 auto;padding:6px 10px;font-size:12px;border:1px solid #374151;border-radius:20px;background:#111827;color:#e5e7eb;">FAQ</button>
-
-</div>
-
-<!-- Input -->
+<!-- INPUT -->
 <div style="display:flex;border-top:1px solid #1f2937;background:#0a0f14;">
-
 <input id="chatInput" placeholder="Message..." 
 style="flex:1;padding:12px;border:none;outline:none;font-size:14px;background:#0b0f14;color:#e5e7eb;">
-
 <button onclick="sendChat()" 
-style="background:#ffffff;color:#0a0a0a;border:none;padding:12px 14px;cursor:pointer;font-weight:600;">
+style="background:#fff;color:#000;border:none;padding:12px 14px;font-weight:600;">
 Send
 </button>
-
 </div>
+
 </div>
 
 <script>
 
 /* =========================
-   STATE
+   STATE (NO BACKEND MEMORY)
 ========================= */
 let chatState = {
     mode: "idle",
-    step: 0,
-    tempData: {},
-    userName: ""
+    userName: localStorage.getItem("ava_name") || "",
+    userEmail: localStorage.getItem("ava_email") || "",
+    collected: {
+        name: !!localStorage.getItem("ava_name"),
+        email: !!localStorage.getItem("ava_email")
+    }
 };
+
+/* =========================
+   RANDOM DELAY (1–2 sec)
+========================= */
+function getDelay() {
+    return Math.floor(Math.random() * 1000) + 1000;
+}
 
 /* =========================
    TOGGLE CHAT
 ========================= */
 function toggleChat() {
-    const box = document.getElementById('chatBox');
-    const isOpen = box.style.display === 'flex';
-
-    box.style.display = isOpen ? 'none' : 'flex';
-
-    if (!isOpen && !chatState.userName) {
-        setTimeout(() => {
-            addMessage("Ava", "Hi 👋 What should I call you?");
-        }, 400);
-    }
+    const box = document.getElementById("chatBox");
+    box.style.display = box.style.display === "flex" ? "none" : "flex";
 }
 
 /* =========================
-   ADD MESSAGE (BUBBLES)
+   TYPING INDICATOR
+========================= */
+function showTyping() {
+    const box = document.getElementById("chatMessages");
+    const div = document.createElement("div");
+    div.id = "typing";
+    div.className = "chat-typing";
+    div.innerText = "Ava is typing...";
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+}
+
+function hideTyping() {
+    const t = document.getElementById("typing");
+    if (t) t.remove();
+}
+
+/* =========================
+   SUGGESTIONS
+========================= */
+function showSuggestions(items) {
+    const box = document.getElementById("suggestions");
+    box.innerHTML = "";
+    box.style.display = "flex";
+
+    items.forEach(i => {
+        const b = document.createElement("button");
+        b.className = "suggest-btn";
+        b.innerText = i.label;
+        b.onclick = () => {
+            document.getElementById("chatInput").value = i.value;
+            sendChat();
+        };
+        box.appendChild(b);
+    });
+}
+
+/* =========================
+   MESSAGE ENGINE
 ========================= */
 function addMessage(sender, text) {
-    const messages = document.getElementById('chatMessages');
+    const box = document.getElementById("chatMessages");
 
-    const wrapper = document.createElement('div');
-    wrapper.style.display = "flex";
-    wrapper.style.marginBottom = "10px";
+    const wrap = document.createElement("div");
+    wrap.style.display = "flex";
+    wrap.style.marginBottom = "10px";
+    wrap.style.justifyContent = sender === "user" ? "flex-end" : "flex-start";
+    wrap.style.animation = "popIn 0.2s ease";
 
-    const isUser = sender === chatState.userName;
-
-    wrapper.style.justifyContent = isUser ? "flex-end" : "flex-start";
-
-    const bubble = document.createElement('div');
+    const bubble = document.createElement("div");
     bubble.innerHTML = text;
-
     bubble.style.maxWidth = "75%";
     bubble.style.padding = "10px 12px";
     bubble.style.borderRadius = "16px";
-    bubble.style.fontSize = "14px";
-    bubble.style.lineHeight = "1.4";
-    bubble.style.wordWrap = "break-word";
-    bubble.style.whiteSpace = "pre-wrap";
 
-    if (isUser) {
+    if (sender === "user") {
         bubble.style.background = "#2563eb";
-        bubble.style.color = "#ffffff";
+        bubble.style.color = "#fff";
         bubble.style.borderBottomRightRadius = "6px";
     } else {
         bubble.style.background = "#1f2937";
@@ -773,165 +826,128 @@ function addMessage(sender, text) {
         bubble.style.borderBottomLeftRadius = "6px";
     }
 
-    wrapper.appendChild(bubble);
-    messages.appendChild(wrapper);
-    messages.scrollTop = messages.scrollHeight;
+    wrap.appendChild(bubble);
+    box.appendChild(wrap);
+    box.scrollTop = box.scrollHeight;
 }
 
 /* =========================
-   QUICK ACTIONS
-========================= */
-function quickAction(type) {
-
-    if (type === "demo") {
-        addMessage("Ava", `View demos here: <a href="https://bws.tools.blackwellaisolutions.com/demo" target="_blank" style="color:#ef4444;font-weight:600;">Open Demo</a>`);
-    }
-
-    if (type === "pricing") {
-        addMessage("Ava", `Pricing is custom based on your needs. Book a consultation.`);
-    }
-
-    if (type === "book") {
-        chatState.mode = "book";
-        chatState.step = 1;
-        addMessage("Ava", "Great — let’s get started. What’s your name?");
-    }
-
-    if (type === "email") {
-        addMessage("Ava", `Contact us at <b>inquiry@blackwellaisolutions.com</b>`);
-    }
-
-    if (type === "faq") {
-        addMessage("Ava", `
-            <b>FAQ</b><br><br>
-
-            <b>Can I customize or upgrade my package?</b><br>
-            Yes — contact <b>sales@blackwellaisolutions.com</b> or book a consultation.<br><br>
-
-            <b>Do you offer support?</b><br>
-            Yes, 24/7 support is available.<br><br>
-
-            <b>Contact teams:</b><br>
-            Sales – sales@blackwellaisolutions.com<br>
-            Support – support@blackwellaisolutions.com<br>
-            Security – security@blackwellaisolutions.com<br>
-            Abuse – abuse@blackwellaisolutions.com<br>
-        `);
-    }
-}
-
-/* =========================
-   FLOW (BOOKING)
+   FLOW + CHAT LOGIC
 ========================= */
 function handleFlow(text) {
 
-    if (chatState.mode === "book") {
+    if (chatState.mode !== "book") return false;
 
-        if (chatState.step === 1) {
-            chatState.tempData.name = text;
-            chatState.step = 2;
+    if (!chatState.collected.name) {
+        chatState.userName = text;
+        chatState.collected.name = true;
+        localStorage.setItem("ava_name", text);
 
-            addMessage("Ava", "Thanks! What email should we use?");
-            return true;
-        }
+        setTimeout(() => {
+            hideTyping();
+            addMessage("ava", `Nice to meet you ${text} 👋 What email should we use?`);
+        }, getDelay());
 
-        if (chatState.step === 2) {
-            chatState.tempData.email = text;
+        return true;
+    }
 
-            addMessage("Ava", `
-                Perfect ${chatState.tempData.name}! 🎉<br><br>
-                We’ll reach you at: <b>${chatState.tempData.email}</b><br><br>
+    if (!chatState.collected.email) {
+        chatState.userEmail = text;
+        chatState.collected.email = true;
+        localStorage.setItem("ava_email", text);
+
+        setTimeout(() => {
+            hideTyping();
+            addMessage("ava", `
+                Perfect ${chatState.userName}! 🎉<br><br>
                 <a href="https://calendly.com/bws-consultations" target="_blank" style="color:#ef4444;font-weight:600;">Book Call</a>
             `);
+        }, getDelay());
 
-            chatState.userName = chatState.tempData.name;
-
-            chatState.mode = "idle";
-            chatState.step = 0;
-            chatState.tempData = {};
-
-            return true;
-        }
+        chatState.mode = "idle";
+        return true;
     }
 
     return false;
 }
 
 /* =========================
-   SEND CHAT
+   SEND MESSAGE
 ========================= */
 function sendChat() {
-    const input = document.getElementById('chatInput');
-    const rawText = input.value.trim();
-    const text = rawText.toLowerCase();
-    if (!rawText) return;
 
-    if (!chatState.userName) {
-        chatState.userName = rawText;
-        addMessage("Ava", `Nice to meet you, ${chatState.userName} 👋 How can I help you today?`);
+    const input = document.getElementById("chatInput");
+    const raw = input.value.trim();
+    const text = raw.toLowerCase();
+    if (!raw) return;
+
+    if (!chatState.collected.name) {
+        chatState.userName = raw;
+        chatState.collected.name = true;
+        localStorage.setItem("ava_name", raw);
+
+        showTyping();
+
+        setTimeout(() => {
+            hideTyping();
+            addMessage("ava", `Nice to meet you ${raw} 👋 How can I help?`);
+
+            showSuggestions([
+                { label: "Demo", value: "demo" },
+                { label: "Pricing", value: "pricing" },
+                { label: "Book", value: "book" }
+            ]);
+
+        }, getDelay());
+
         input.value = "";
         return;
     }
 
-    addMessage(chatState.userName, rawText);
+    addMessage("user", raw);
 
-    if (handleFlow(rawText)) {
+    if (handleFlow(raw)) {
         input.value = "";
         return;
     }
 
-    const intents = {
-        demo: /(demo|show|example|see)/,
-        pricing: /(price|pricing|cost|quote)/,
-        book: /(book|call|meeting|consult)/,
-        email: /(email|contact|reach)/,
-        faq: /(faq|help|support|contact|upgrade|security|sales)/
-    };
+    showTyping();
 
-    let intent = "unknown";
+    setTimeout(() => {
+        hideTyping();
 
-    for (const key in intents) {
-        if (intents[key].test(text)) {
-            intent = key;
-            break;
+        if (text.includes("demo")) {
+            addMessage("ava", `Watch demo: <a href="https://bws.tools.blackwellaisolutions.com/demo" target="_blank" style="color:#ef4444;">Open</a>`);
         }
-    }
 
-    let reply = "";
+        else if (text.includes("pricing")) {
+            addMessage("ava", "Pricing is custom based on your needs.");
+        }
 
-    if (intent === "demo") {
-        reply = `View demos: <a href="https://bws.tools.blackwellaisolutions.com/demo" target="_blank" style="color:#ef4444;font-weight:600;">Open Demo</a>`;
-    }
+        else if (text.includes("book")) {
+            chatState.mode = "book";
+            addMessage("ava", chatState.collected.name ? "What email should we use?" : "What’s your name?");
+        }
 
-    else if (intent === "pricing") {
-        reply = `Pricing is custom. Book a call for details.`;
-    }
+        else {
+            addMessage("ava", "I can help with demo, pricing, booking, and support.");
+        }
 
-    else if (intent === "book") {
-        chatState.mode = "book";
-        chatState.step = 1;
-        reply = "Let’s get started — what’s your name?";
-    }
+        showSuggestions([
+            { label: "Demo", value: "demo" },
+            { label: "Pricing", value: "pricing" },
+            { label: "Book", value: "book" }
+        ]);
 
-    else if (intent === "email") {
-        reply = `Contact: <b>inquiry@blackwellaisolutions.com</b>`;
-    }
+    }, getDelay());
 
-    else if (intent === "faq") {
-        reply = `I can help with FAQ topics — tap FAQ button.`;
-    }
-
-    else {
-        reply = `I can help with demo, pricing, booking, FAQ, or support.`;
-    }
-
-    addMessage("Ava", reply);
     input.value = "";
 }
+
 </script>
 
 <!-- ========================= -->
-<!-- 💬 END WIDGET -->
+<!-- 💬 END CHAT WIDGET -->
 <!-- ========================= -->
 
 </body>
