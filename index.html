@@ -644,7 +644,7 @@ function toggleFaq(id) {
 </footer>
     
 <!-- ========================= -->
-<!-- 💬 BLACKWELL CHAT WIDGET (AVA - FAQ + FLOW UPGRADE) -->
+<!-- 💬 BLACKWELL CHAT WIDGET (AVA - PERSONA + CHAT STYLE UPGRADE) -->
 <!-- ========================= -->
 
 <!-- Floating Button -->
@@ -664,7 +664,7 @@ style="position:fixed;bottom:20px;right:20px;padding:12px 16px;background:#0a0a0
 
 <!-- Chat Box -->
 <div id="chatBox" 
-style="display:none;position:fixed;bottom:90px;right:20px;width:360px;max-width:92vw;height:520px;background:#0b0f14;border-radius:14px;overflow:hidden;z-index:99999;box-shadow:0 15px 40px rgba(0,0,0,0.5);font-family:Arial;flex-direction:column;">
+style="display:none;position:fixed;bottom:90px;right:20px;width:360px;max-width:92vw;height:520px;background:linear-gradient(to bottom,#0b0f14,#0a0a0a);border-radius:14px;overflow:hidden;z-index:99999;box-shadow:0 15px 40px rgba(0,0,0,0.5);font-family:Arial;flex-direction:column;">
 
 <!-- Header -->
 <div style="background:#0a0a0a;color:#fff;padding:12px 14px;font-weight:700;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1f2937;">
@@ -677,10 +677,10 @@ Ava • Blackwell AI Assistant
 
 <!-- Messages -->
 <div id="chatMessages" 
-style="flex:1;padding:10px;overflow-y:auto;font-size:14px;background:#0b0f14;color:#e5e7eb;">
+style="flex:1;padding:10px;overflow-y:auto;font-size:14px;color:#e5e7eb;">
 
 <div style="margin-bottom:10px;">
-<b style="color:#ffffff;">Ava:</b> Hi 👋 I can help you with demos, pricing, booking a consultation, FAQs, or support.
+Hi 👋 I can help you with demos, pricing, booking a consultation, FAQs, or support.
 </div>
 
 </div>
@@ -688,37 +688,18 @@ style="flex:1;padding:10px;overflow-y:auto;font-size:14px;background:#0b0f14;col
 <!-- Quick Buttons -->
 <div style="display:flex;gap:6px;padding:8px;border-top:1px solid #1f2937;background:#0a0f14;overflow-x:auto;">
 
-<button onclick="quickAction('demo')" 
-style="flex:0 0 auto;padding:6px 10px;font-size:12px;border:1px solid #374151;border-radius:20px;background:#111827;color:#e5e7eb;">
-Demo
-</button>
-
-<button onclick="quickAction('pricing')" 
-style="flex:0 0 auto;padding:6px 10px;font-size:12px;border:1px solid #374151;border-radius:20px;background:#111827;color:#e5e7eb;">
-Pricing
-</button>
-
-<button onclick="quickAction('book')" 
-style="flex:0 0 auto;padding:6px 10px;font-size:12px;border:1px solid #374151;border-radius:20px;background:#111827;color:#e5e7eb;">
-Book Call
-</button>
-
-<button onclick="quickAction('email')" 
-style="flex:0 0 auto;padding:6px 10px;font-size:12px;border:1px solid #374151;border-radius:20px;background:#111827;color:#e5e7eb;">
-Email
-</button>
-
-<button onclick="quickAction('faq')" 
-style="flex:0 0 auto;padding:6px 10px;font-size:12px;border:1px solid #374151;border-radius:20px;background:#111827;color:#e5e7eb;">
-FAQ
-</button>
+<button onclick="quickAction('demo')" style="flex:0 0 auto;padding:6px 10px;font-size:12px;border:1px solid #374151;border-radius:20px;background:#111827;color:#e5e7eb;">Demo</button>
+<button onclick="quickAction('pricing')" style="flex:0 0 auto;padding:6px 10px;font-size:12px;border:1px solid #374151;border-radius:20px;background:#111827;color:#e5e7eb;">Pricing</button>
+<button onclick="quickAction('book')" style="flex:0 0 auto;padding:6px 10px;font-size:12px;border:1px solid #374151;border-radius:20px;background:#111827;color:#e5e7eb;">Book Call</button>
+<button onclick="quickAction('email')" style="flex:0 0 auto;padding:6px 10px;font-size:12px;border:1px solid #374151;border-radius:20px;background:#111827;color:#e5e7eb;">Email</button>
+<button onclick="quickAction('faq')" style="flex:0 0 auto;padding:6px 10px;font-size:12px;border:1px solid #374151;border-radius:20px;background:#111827;color:#e5e7eb;">FAQ</button>
 
 </div>
 
 <!-- Input -->
 <div style="display:flex;border-top:1px solid #1f2937;background:#0a0f14;">
 
-<input id="chatInput" placeholder="Ask Ava something..." 
+<input id="chatInput" placeholder="Message..." 
 style="flex:1;padding:12px;border:none;outline:none;font-size:14px;background:#0b0f14;color:#e5e7eb;">
 
 <button onclick="sendChat()" 
@@ -730,13 +711,15 @@ Send
 </div>
 
 <script>
+
 /* =========================
-   STATE (NO BACKEND)
+   STATE
 ========================= */
 let chatState = {
     mode: "idle",
     step: 0,
-    tempData: {}
+    tempData: {},
+    userName: ""
 };
 
 /* =========================
@@ -744,21 +727,54 @@ let chatState = {
 ========================= */
 function toggleChat() {
     const box = document.getElementById('chatBox');
-    box.style.display = box.style.display === 'flex' ? 'none' : 'flex';
+    const isOpen = box.style.display === 'flex';
+
+    box.style.display = isOpen ? 'none' : 'flex';
+
+    if (!isOpen && !chatState.userName) {
+        setTimeout(() => {
+            addMessage("Ava", "Hi 👋 What should I call you?");
+        }, 400);
+    }
 }
 
 /* =========================
-   ADD MESSAGE
+   ADD MESSAGE (BUBBLES)
 ========================= */
 function addMessage(sender, text) {
     const messages = document.getElementById('chatMessages');
-    const div = document.createElement('div');
-    div.style.marginBottom = "10px";
 
-    const senderColor = sender === "Ava" ? "#ffffff" : "#93c5fd";
+    const wrapper = document.createElement('div');
+    wrapper.style.display = "flex";
+    wrapper.style.marginBottom = "10px";
 
-    div.innerHTML = `<b style="color:${senderColor}">${sender}:</b> <span style="color:#e5e7eb">${text}</span>`;
-    messages.appendChild(div);
+    const isUser = sender === chatState.userName;
+
+    wrapper.style.justifyContent = isUser ? "flex-end" : "flex-start";
+
+    const bubble = document.createElement('div');
+    bubble.innerHTML = text;
+
+    bubble.style.maxWidth = "75%";
+    bubble.style.padding = "10px 12px";
+    bubble.style.borderRadius = "16px";
+    bubble.style.fontSize = "14px";
+    bubble.style.lineHeight = "1.4";
+    bubble.style.wordWrap = "break-word";
+    bubble.style.whiteSpace = "pre-wrap";
+
+    if (isUser) {
+        bubble.style.background = "#2563eb";
+        bubble.style.color = "#ffffff";
+        bubble.style.borderBottomRightRadius = "6px";
+    } else {
+        bubble.style.background = "#1f2937";
+        bubble.style.color = "#e5e7eb";
+        bubble.style.borderBottomLeftRadius = "6px";
+    }
+
+    wrapper.appendChild(bubble);
+    messages.appendChild(wrapper);
     messages.scrollTop = messages.scrollHeight;
 }
 
@@ -772,7 +788,7 @@ function quickAction(type) {
     }
 
     if (type === "pricing") {
-        addMessage("Ava", `Pricing is customized based on your needs. Book a consultation for a quote.`);
+        addMessage("Ava", `Pricing is custom based on your needs. Book a consultation.`);
     }
 
     if (type === "book") {
@@ -787,26 +803,25 @@ function quickAction(type) {
 
     if (type === "faq") {
         addMessage("Ava", `
-            <b>Frequently Asked Questions</b><br><br>
+            <b>FAQ</b><br><br>
 
             <b>Can I customize or upgrade my package?</b><br>
-            Yes, we offer customized packages. Contact <b>sales@blackwellaisolutions.com</b> or book a consultation.<br><br>
+            Yes — contact <b>sales@blackwellaisolutions.com</b> or book a consultation.<br><br>
 
-            <b>Do you offer customer support?</b><br>
-            Yes, we provide 24/7 customer support.<br><br>
+            <b>Do you offer support?</b><br>
+            Yes, 24/7 support is available.<br><br>
 
-            <b>How can I contact your team?</b><br>
-            • Sales – sales@blackwellaisolutions.com<br>
-            • Support – support@blackwellaisolutions.com<br>
-            • General – inquiry@blackwellaisolutions.com<br>
-            • Security – security@blackwellaisolutions.com<br>
-            • Abuse – abuse@blackwellaisolutions.com<br>
+            <b>Contact teams:</b><br>
+            Sales – sales@blackwellaisolutions.com<br>
+            Support – support@blackwellaisolutions.com<br>
+            Security – security@blackwellaisolutions.com<br>
+            Abuse – abuse@blackwellaisolutions.com<br>
         `);
     }
 }
 
 /* =========================
-   FLOW HANDLER (BOOKING)
+   FLOW (BOOKING)
 ========================= */
 function handleFlow(text) {
 
@@ -816,7 +831,7 @@ function handleFlow(text) {
             chatState.tempData.name = text;
             chatState.step = 2;
 
-            addMessage("Ava", "Thanks! What email should we use to confirm your booking?");
+            addMessage("Ava", "Thanks! What email should we use?");
             return true;
         }
 
@@ -825,10 +840,11 @@ function handleFlow(text) {
 
             addMessage("Ava", `
                 Perfect ${chatState.tempData.name}! 🎉<br><br>
-                We’ll contact you at: <b>${chatState.tempData.email}</b><br><br>
-                You can also book instantly here:<br>
+                We’ll reach you at: <b>${chatState.tempData.email}</b><br><br>
                 <a href="https://calendly.com/bws-consultations" target="_blank" style="color:#ef4444;font-weight:600;">Book Call</a>
             `);
+
+            chatState.userName = chatState.tempData.name;
 
             chatState.mode = "idle";
             chatState.step = 0;
@@ -842,7 +858,7 @@ function handleFlow(text) {
 }
 
 /* =========================
-   SEND CHAT (INTENT ENGINE)
+   SEND CHAT
 ========================= */
 function sendChat() {
     const input = document.getElementById('chatInput');
@@ -850,7 +866,14 @@ function sendChat() {
     const text = rawText.toLowerCase();
     if (!rawText) return;
 
-    addMessage("You", rawText);
+    if (!chatState.userName) {
+        chatState.userName = rawText;
+        addMessage("Ava", `Nice to meet you, ${chatState.userName} 👋 How can I help you today?`);
+        input.value = "";
+        return;
+    }
+
+    addMessage(chatState.userName, rawText);
 
     if (handleFlow(rawText)) {
         input.value = "";
@@ -858,11 +881,11 @@ function sendChat() {
     }
 
     const intents = {
-        demo: /(demo|show|example|see|product)/,
-        pricing: /(price|pricing|cost|quote|how much)/,
-        book: /(book|call|meeting|consult|schedule)/,
+        demo: /(demo|show|example|see)/,
+        pricing: /(price|pricing|cost|quote)/,
+        book: /(book|call|meeting|consult)/,
         email: /(email|contact|reach)/,
-        faq: /(faq|questions|help|support|contact|customize|upgrade|security|abuse|sales)/
+        faq: /(faq|help|support|contact|upgrade|security|sales)/
     };
 
     let intent = "unknown";
@@ -877,42 +900,29 @@ function sendChat() {
     let reply = "";
 
     if (intent === "demo") {
-        reply = `View demos here: <a href="https://bws.tools.blackwellaisolutions.com/demo" target="_blank" style="color:#ef4444;font-weight:600;">Open Demo</a>`;
+        reply = `View demos: <a href="https://bws.tools.blackwellaisolutions.com/demo" target="_blank" style="color:#ef4444;font-weight:600;">Open Demo</a>`;
     }
 
     else if (intent === "pricing") {
-        reply = `Pricing is custom based on your needs. Book a consultation: <a href="https://calendly.com/bws-consultations" target="_blank" style="color:#ef4444;font-weight:600;">Book Call</a>`;
+        reply = `Pricing is custom. Book a call for details.`;
     }
 
     else if (intent === "book") {
         chatState.mode = "book";
         chatState.step = 1;
-        reply = "Great — let’s get started. What’s your name?";
+        reply = "Let’s get started — what’s your name?";
     }
 
     else if (intent === "email") {
-        reply = `Contact us at <b>inquiry@blackwellaisolutions.com</b>`;
+        reply = `Contact: <b>inquiry@blackwellaisolutions.com</b>`;
     }
 
     else if (intent === "faq") {
-        reply = `
-            I can help with:<br><br>
-            • Custom packages<br>
-            • Support & contact info<br>
-            • Sales inquiries<br><br>
-            Click the FAQ button for full details.
-        `;
+        reply = `I can help with FAQ topics — tap FAQ button.`;
     }
 
     else {
-        reply = `
-            I can help you with:<br><br>
-            • Demo<br>
-            • Pricing<br>
-            • Booking a call<br>
-            • FAQ<br>
-            • Contact info
-        `;
+        reply = `I can help with demo, pricing, booking, FAQ, or support.`;
     }
 
     addMessage("Ava", reply);
