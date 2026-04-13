@@ -644,7 +644,7 @@ function toggleFaq(id) {
 </footer>
     
 <!-- ========================= -->
-<!-- 💬 BLACKWELL CHAT WIDGET (AVA - CLICK ONLY + POWERED FOOTER) -->
+<!-- 💬 BLACKWELL CHAT WIDGET (AVA - CLICK ONLY + FULL BRANDING) -->
 <!-- ========================= -->
 
 <div onclick="toggleChat()" 
@@ -652,7 +652,7 @@ style="position:fixed;bottom:20px;right:20px;padding:14px 18px;background:#0a0a0
 display:flex;align-items:center;gap:8px;cursor:pointer;z-index:99999;
 font-size:14px;font-family:Arial;box-shadow:0 10px 25px rgba(0,0,0,0.3);
 animation: softFloat 2.5s ease-in-out infinite;">
-💬 Chat with Ava
+💬 Chat with AVA
 <span style="width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block;"></span>
 </div>
 
@@ -706,7 +706,24 @@ animation: softFloat 2.5s ease-in-out infinite;">
   background:#1f2937;
 }
 
-/* 🔥 POWERED FOOTER */
+/* 🔥 powered inside bubble */
+.poweredInline {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-top:6px;
+  font-size:10px;
+  color:#9ca3af;
+  opacity:0.85;
+}
+
+.poweredInline img {
+  width:14px;
+  height:14px;
+  border-radius:3px;
+}
+
+/* footer */
 .poweredFooter {
   position:absolute;
   bottom:0;
@@ -744,18 +761,17 @@ display:flex;justify-content:space-between;align-items:center;
 border-bottom:1px solid #1f2937;">
 <div>
 Ava • Assistant
-<div style="font-size:11px;color:#22c55e;font-weight:400;">● Online</div>
+<div style="font-size:11px;color:#22c55e;">● Online</div>
 </div>
 <div onclick="toggleChat()" style="cursor:pointer;">✕</div>
 </div>
 
-<!-- CHAT AREA -->
+<!-- CHAT -->
 <div id="chatMessages" 
-style="flex:1;padding:10px;overflow-y:auto;color:#e5e7eb;font-size:14px;
-padding-bottom:40px;">
+style="flex:1;padding:10px;overflow-y:auto;color:#e5e7eb;font-size:14px;padding-bottom:40px;">
 </div>
 
-<!-- POWERED BY FOOTER -->
+<!-- FOOTER -->
 <div class="poweredFooter">
   <img src="https://res.cloudinary.com/dxninzgnm/image/upload/v1773699124/Blackwell_FC_Logo_64_x_64_wgc6xa.png" />
   Powered by <b style="color:#fff;">Blackwell AI</b> V.1
@@ -773,20 +789,31 @@ function toggleChat() {
 /* =========================
    MESSAGE ENGINE
 ========================= */
-function addMessage(type, html) {
+function addMessage(type, text) {
 
   const box = document.getElementById("chatMessages");
 
   const div = document.createElement("div");
   div.className = type === "user" ? "userBubble" : "chatBubble";
-  div.innerHTML = html;
+
+  if (type === "ava") {
+    div.innerHTML = `
+      ${text}
+      <div class="poweredInline">
+        <img src="https://res.cloudinary.com/dxninzgnm/image/upload/v1773699124/Blackwell_FC_Logo_64_x_64_wgc6xa.png">
+        Powered by Blackwell AI V.1
+      </div>
+    `;
+  } else {
+    div.innerHTML = text;
+  }
 
   box.appendChild(div);
   box.scrollTop = box.scrollHeight;
 }
 
 /* =========================
-   OPTIONS SYSTEM
+   OPTIONS
 ========================= */
 function showOptions(options) {
 
@@ -809,7 +836,7 @@ function showOptions(options) {
 }
 
 /* =========================
-   START FLOW
+   FLOW
 ========================= */
 function startChat() {
 
@@ -832,7 +859,7 @@ function startChat() {
     {
       label: "💰 Pricing",
       action: () => {
-        addMessage("ava", "Pricing is custom based on your needs.");
+        addMessage("ava", "Pricing is customized to your needs.");
         showOptions([
           {
             label: "📅 Book Call",
@@ -845,7 +872,7 @@ function startChat() {
     {
       label: "📅 Book Appointment",
       action: () => {
-        addMessage("ava", "Perfect — let’s get you booked.");
+        addMessage("ava", "Let’s get you scheduled.");
         showOptions([
           {
             label: "📅 Book Now",
@@ -857,7 +884,7 @@ function startChat() {
   ]);
 }
 
-/* AUTO START */
+/* INIT */
 setTimeout(startChat, 800);
 
 </script>
