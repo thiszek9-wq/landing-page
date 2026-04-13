@@ -644,276 +644,192 @@ function toggleFaq(id) {
 </footer>
     
 <!-- ========================= -->
-<!-- 💬 BLACKWELL CHAT WIDGET (AVA V2 - HYBRID SALES + CONSULTANT AI) -->
+<!-- 💬 BLACKWELL CHAT WIDGET (AVA - CLICK ONLY SYSTEM V1) -->
 <!-- ========================= -->
 
 <div onclick="toggleChat()" 
-style="position:fixed;bottom:20px;right:20px;padding:12px 16px;background:#0a0a0a;color:#fff;border-radius:999px;display:flex;align-items:center;gap:8px;cursor:pointer;z-index:99999;font-size:14px;font-family:Arial;box-shadow:0 10px 25px rgba(0,0,0,0.3);">
-💬 Chat with Ava
-<span style="width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block;animation:pulse 1.5s infinite;"></span>
+style="position:fixed;bottom:20px;right:20px;padding:14px 18px;background:#0a0a0a;color:#fff;border-radius:999px;
+display:flex;align-items:center;gap:8px;cursor:pointer;z-index:99999;
+font-size:14px;font-family:Arial;box-shadow:0 10px 25px rgba(0,0,0,0.3);
+animation: softFloat 2.5s ease-in-out infinite;">
+💬 Chat
+<span style="width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block;"></span>
 </div>
 
 <style>
-@keyframes pulse {
-  0% { transform: scale(1); opacity:1; }
-  50% { transform: scale(1.4); opacity:0.6; }
-  100% { transform: scale(1); opacity:1; }
+
+@keyframes softFloat {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0px); }
 }
 
 @keyframes popIn {
-  0% { transform: translateY(8px) scale(0.98); opacity:0; }
-  100% { transform: translateY(0) scale(1); opacity:1; }
+  0% { transform: scale(0.98); opacity:0; }
+  100% { transform: scale(1); opacity:1; }
 }
 
-@keyframes softBounce {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-2px); }
-  100% { transform: translateY(0); }
+.chatBubble {
+  background: linear-gradient(135deg,#1f2937,#0f172a);
+  color:#e5e7eb;
+  padding:10px 12px;
+  border-radius:14px;
+  margin-bottom:10px;
+  animation: popIn 0.2s ease;
 }
 
-.chat-typing {
-  font-size: 12px;
-  color: #9ca3af;
-  margin: 5px 0 10px 10px;
-  font-style: italic;
+.userBubble {
+  background: linear-gradient(135deg,#2563eb,#1d4ed8);
+  color:#fff;
+  padding:10px 12px;
+  border-radius:14px;
+  margin-bottom:10px;
+  text-align:right;
+  animation: popIn 0.2s ease;
 }
 
-#suggestions {
-  display:flex;
-  gap:6px;
-  padding:8px;
-  overflow-x:auto;
-  border-top:1px solid #1f2937;
-  background:#0a0f14;
-}
-
-.suggest-btn {
-  flex:0 0 auto;
-  padding:6px 10px;
-  font-size:12px;
-  border:1px solid #374151;
-  border-radius:20px;
+.optionBtn {
+  width:100%;
+  padding:10px;
+  margin-top:6px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  font-size:13px;
   background:#111827;
   color:#e5e7eb;
-  cursor:pointer;
   transition:0.2s;
 }
 
-.suggest-btn:hover {
-  transform: scale(1.05);
+.optionBtn:hover {
+  transform: scale(1.02);
+  background:#1f2937;
 }
+
 </style>
 
 <div id="chatBox" 
-style="display:none;position:fixed;bottom:90px;right:20px;width:360px;max-width:92vw;height:540px;
-background:linear-gradient(180deg,#0b0f14,#07090d);
+style="display:none;position:fixed;bottom:90px;right:20px;width:360px;
+max-width:92vw;height:520px;background:linear-gradient(180deg,#0b0f14,#07090d);
 border-radius:14px;overflow:hidden;z-index:99999;
 box-shadow:0 15px 40px rgba(0,0,0,0.5);
 font-family:Arial;flex-direction:column;">
 
 <!-- HEADER -->
-<div style="background:#0a0a0a;color:#fff;padding:12px 14px;font-weight:700;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1f2937;">
+<div style="background:#0a0a0a;color:#fff;padding:12px 14px;font-weight:700;
+display:flex;justify-content:space-between;align-items:center;
+border-bottom:1px solid #1f2937;">
 <div>
-Ava • Blackwell AI Assistant
-<div id="modeTag" style="font-size:11px;color:#22c55e;font-weight:400;">● Online</div>
+Ava • Assistant
+<div style="font-size:11px;color:#22c55e;font-weight:400;">● Online</div>
 </div>
-<div onclick="toggleChat()" style="cursor:pointer;font-size:16px;">✕</div>
+<div onclick="toggleChat()" style="cursor:pointer;">✕</div>
 </div>
 
-<!-- MESSAGES -->
+<!-- CHAT AREA -->
 <div id="chatMessages" 
-style="flex:1;padding:10px;overflow-y:auto;font-size:14px;color:#e5e7eb;">
+style="flex:1;padding:10px;overflow-y:auto;color:#e5e7eb;font-size:14px;">
 
-<div style="margin-bottom:10px;">
-Hi 👋 I’m Ava — I can help you explore demos, pricing, or book a consultation.
-</div>
-
-</div>
-
-<!-- CTA BUTTON AREA -->
-<div id="suggestions" style="display:none;"></div>
-
-<!-- INPUT -->
-<div style="display:flex;border-top:1px solid #1f2937;background:#0a0f14;">
-<input id="chatInput" placeholder="Message..." 
-style="flex:1;padding:12px;border:none;outline:none;font-size:14px;background:#0b0f14;color:#e5e7eb;">
-<button onclick="sendChat()" 
-style="background:#fff;color:#000;border:none;padding:12px 14px;font-weight:600;">
-Send
-</button>
 </div>
 
 </div>
 
 <script>
 
-let chatState = {
-  mode: "idle"
-};
-
-function getDelay() {
-  return Math.floor(Math.random() * 900) + 900;
-}
-
 function toggleChat() {
   const box = document.getElementById("chatBox");
   box.style.display = box.style.display === "flex" ? "none" : "flex";
 }
 
-function showTyping() {
+/* =========================
+   RENDER MESSAGE
+========================= */
+function addMessage(type, html) {
+
   const box = document.getElementById("chatMessages");
+
   const div = document.createElement("div");
-  div.className = "chat-typing";
-  div.innerText = "Ava is typing...";
+  div.className = type === "user" ? "userBubble" : "chatBubble";
+  div.innerHTML = html;
+
   box.appendChild(div);
   box.scrollTop = box.scrollHeight;
 }
 
-function hideTyping() {
-  const t = document.querySelector(".chat-typing");
-  if (t) t.remove();
-}
-
 /* =========================
-   SMART INTENT DETECTION
+   OPTIONS SYSTEM (CLICK ONLY)
 ========================= */
-function getIntent(text) {
-
-  let score = 0;
-
-  if (text.includes("book") || text.includes("appointment") || text.includes("call")) score += 3;
-  if (text.includes("pricing") || text.includes("price")) score += 2;
-  if (text.includes("demo")) score += 2;
-  if (text.includes("urgent") || text.includes("now")) score += 2;
-
-  if (score >= 3) return "hot";
-  if (score === 2) return "warm";
-  return "cold";
-}
-
-/* =========================
-   CTA SYSTEM
-========================= */
-function showCTA(type) {
-
-  const box = document.getElementById("suggestions");
-  box.style.display = "flex";
-  box.innerHTML = "";
-
-  let btn = document.createElement("button");
-  btn.className = "suggest-btn";
-
-  if (type === "demo") {
-    btn.innerText = "▶ View Demo";
-    btn.onclick = () => window.open("https://bws.tools.blackwellaisolutions.com/demo", "_blank");
-  }
-
-  if (type === "pricing") {
-    btn.innerText = "💰 View Pricing / Book";
-    btn.onclick = () => window.open("https://calendly.com/bws-consultations", "_blank");
-  }
-
-  if (type === "book") {
-    btn.innerText = "📅 Book Appointment";
-    btn.onclick = () => window.open("https://calendly.com/bws-consultations", "_blank");
-  }
-
-  box.appendChild(btn);
-}
-
-/* =========================
-   MESSAGE ENGINE (GRADIENT + BOUNCE)
-========================= */
-function addMessage(sender, text) {
+function showOptions(options) {
 
   const box = document.getElementById("chatMessages");
 
-  const wrap = document.createElement("div");
-  wrap.style.display = "flex";
-  wrap.style.marginBottom = "10px";
-  wrap.style.justifyContent = sender === "user" ? "flex-end" : "flex-start";
-  wrap.style.animation = "popIn 0.25s ease";
+  options.forEach(opt => {
 
-  const bubble = document.createElement("div");
-  bubble.innerHTML = text;
-  bubble.style.maxWidth = "75%";
-  bubble.style.padding = "10px 12px";
-  bubble.style.borderRadius = "16px";
-  bubble.style.lineHeight = "1.4";
+    const btn = document.createElement("button");
+    btn.className = "optionBtn";
+    btn.innerText = opt.label;
 
-  if (sender === "user") {
-    bubble.style.background = "linear-gradient(135deg,#2563eb,#1d4ed8)";
-    bubble.style.color = "#fff";
-    bubble.style.borderBottomRightRadius = "6px";
-  } else {
-    bubble.style.background = "linear-gradient(135deg,#1f2937,#0f172a)";
-    bubble.style.color = "#e5e7eb";
-    bubble.style.borderBottomLeftRadius = "6px";
-    bubble.style.animation += ", softBounce 3s ease-in-out";
-  }
+    btn.onclick = () => {
+      addMessage("user", opt.label);
+      opt.action();
+    };
 
-  wrap.appendChild(bubble);
-  box.appendChild(wrap);
-  box.scrollTop = box.scrollHeight;
+    box.appendChild(btn);
+  });
+
 }
 
 /* =========================
-   MAIN CHAT LOGIC
+   FLOW SYSTEM
 ========================= */
-function sendChat() {
+function startChat() {
 
-  const input = document.getElementById("chatInput");
-  const raw = input.value.trim();
-  const text = raw.toLowerCase();
-  if (!raw) return;
+  addMessage("ava", "Hi 👋 What would you like to do today?");
 
-  addMessage("user", raw);
-  showTyping();
-
-  const intent = getIntent(text);
-
-  setTimeout(() => {
-
-    hideTyping();
-
-    /* HOT INTENT (Sales Mode) */
-    if (intent === "hot") {
-
-      addMessage("ava", "Perfect — here’s the fastest way to get started 👇");
-
-      if (text.includes("demo")) showCTA("demo");
-      else if (text.includes("pricing")) showCTA("pricing");
-      else showCTA("book");
-
-      chatState.mode = "sales";
-      return;
-    }
-
-    /* WARM INTENT (Consultant Mode) */
-    if (intent === "warm") {
-
-      addMessage("ava", "Got it — I can help you with that.");
-
-      if (text.includes("demo")) {
-        showCTA("demo");
-      } else {
-        showCTA("pricing");
+  showOptions([
+    {
+      label: "📺 View Demo",
+      action: () => {
+        addMessage("ava", "Here’s the demo:");
+        showOptions([
+          {
+            label: "▶ Open Demo",
+            action: () => window.open("https://bws.tools.blackwellaisolutions.com/demo", "_blank")
+          }
+        ]);
       }
+    },
 
-      chatState.mode = "consultant";
-      return;
+    {
+      label: "💰 Pricing",
+      action: () => {
+        addMessage("ava", "Pricing is custom based on your needs.");
+        showOptions([
+          {
+            label: "📅 Book Pricing Call",
+            action: () => window.open("https://calendly.com/bws-consultations", "_blank")
+          }
+        ]);
+      }
+    },
+
+    {
+      label: "📅 Book Appointment",
+      action: () => {
+        addMessage("ava", "Perfect — let’s get you booked.");
+        showOptions([
+          {
+            label: "📅 Book Now",
+            action: () => window.open("https://calendly.com/bws-consultations", "_blank")
+          }
+        ]);
+      }
     }
-
-    /* COLD INTENT */
-    addMessage("ava", "Hey 👋 Are you looking for a demo, pricing, or to book a call?");
-    showCTA("book");
-
-    chatState.mode = "consultant";
-
-  }, getDelay());
-
-  input.value = "";
+  ]);
 }
+
+/* AUTO START */
+setTimeout(startChat, 800);
 
 </script>
 
