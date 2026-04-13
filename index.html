@@ -643,8 +643,8 @@ function toggleFaq(id) {
     </div>
 </footer>
     
-!-- ========================= -->
-<!-- 💬 BLACKWELL CHAT WIDGET (AVA - FINAL FRONTEND VERSION) -->
+<!-- ========================= -->
+<!-- 💬 BLACKWELL CHAT WIDGET (AVA - HYBRID LEAD VERSION) -->
 <!-- ========================= -->
 
 <div onclick="toggleChat()" 
@@ -732,9 +732,6 @@ Send
 
 <script>
 
-/* =========================
-   STATE (NO BACKEND MEMORY)
-========================= */
 let chatState = {
     mode: "idle",
     userName: localStorage.getItem("ava_name") || "",
@@ -745,24 +742,15 @@ let chatState = {
     }
 };
 
-/* =========================
-   RANDOM DELAY (1–2 sec)
-========================= */
 function getDelay() {
     return Math.floor(Math.random() * 1000) + 1000;
 }
 
-/* =========================
-   TOGGLE CHAT
-========================= */
 function toggleChat() {
     const box = document.getElementById("chatBox");
     box.style.display = box.style.display === "flex" ? "none" : "flex";
 }
 
-/* =========================
-   TYPING INDICATOR
-========================= */
 function showTyping() {
     const box = document.getElementById("chatMessages");
     const div = document.createElement("div");
@@ -778,9 +766,6 @@ function hideTyping() {
     if (t) t.remove();
 }
 
-/* =========================
-   SUGGESTIONS
-========================= */
 function showSuggestions(items) {
     const box = document.getElementById("suggestions");
     box.innerHTML = "";
@@ -798,9 +783,6 @@ function showSuggestions(items) {
     });
 }
 
-/* =========================
-   MESSAGE ENGINE
-========================= */
 function addMessage(sender, text) {
     const box = document.getElementById("chatMessages");
 
@@ -832,7 +814,20 @@ function addMessage(sender, text) {
 }
 
 /* =========================
-   FLOW + CHAT LOGIC
+   🔥 HYBRID EMAIL LEAD CAPTURE (OPTION A INSIDE C)
+========================= */
+function sendLeadEmail(name, email) {
+
+    const subject = encodeURIComponent("New Chat Lead - Ava Bot");
+    const body = encodeURIComponent(
+        `New Lead Captured:\n\nName: ${name}\nEmail: ${email}\nSource: Chat Widget`
+    );
+
+    window.location.href = `mailto:sales@blackwellaisolutions.com?subject=${subject}&body=${body}`;
+}
+
+/* =========================
+   FLOW HANDLER
 ========================= */
 function handleFlow(text) {
 
@@ -856,10 +851,14 @@ function handleFlow(text) {
         chatState.collected.email = true;
         localStorage.setItem("ava_email", text);
 
+        /* 🔥 SEND LEAD TO YOUR EMAIL (OPTION A) */
+        sendLeadEmail(chatState.userName, text);
+
         setTimeout(() => {
             hideTyping();
             addMessage("ava", `
                 Perfect ${chatState.userName}! 🎉<br><br>
+                Your request has been sent. We’ll reach out soon.<br><br>
                 <a href="https://calendly.com/bws-consultations" target="_blank" style="color:#ef4444;font-weight:600;">Book Call</a>
             `);
         }, getDelay());
@@ -871,9 +870,6 @@ function handleFlow(text) {
     return false;
 }
 
-/* =========================
-   SEND MESSAGE
-========================= */
 function sendChat() {
 
     const input = document.getElementById("chatInput");
