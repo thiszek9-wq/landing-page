@@ -644,12 +644,12 @@ function toggleFaq(id) {
 </footer>
     
 <!-- ========================= -->
-<!-- 💬 BLACKWELL CHAT WIDGET (AVA - SMART LINKS + FIXED FLOW) -->
+<!-- 💬 BLACKWELL CHAT WIDGET (AVA V2 - HYBRID SALES + CONSULTANT AI) -->
 <!-- ========================= -->
 
 <div onclick="toggleChat()" 
 style="position:fixed;bottom:20px;right:20px;padding:12px 16px;background:#0a0a0a;color:#fff;border-radius:999px;display:flex;align-items:center;gap:8px;cursor:pointer;z-index:99999;font-size:14px;font-family:Arial;box-shadow:0 10px 25px rgba(0,0,0,0.3);">
-💬 Chat With Ava
+💬 Chat with Ava
 <span style="width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block;animation:pulse 1.5s infinite;"></span>
 </div>
 
@@ -661,8 +661,14 @@ style="position:fixed;bottom:20px;right:20px;padding:12px 16px;background:#0a0a0
 }
 
 @keyframes popIn {
-  0% { transform: translateY(8px); opacity:0; }
-  100% { transform: translateY(0); opacity:1; }
+  0% { transform: translateY(8px) scale(0.98); opacity:0; }
+  100% { transform: translateY(0) scale(1); opacity:1; }
+}
+
+@keyframes softBounce {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+  100% { transform: translateY(0); }
 }
 
 .chat-typing {
@@ -690,17 +696,26 @@ style="position:fixed;bottom:20px;right:20px;padding:12px 16px;background:#0a0a0
   background:#111827;
   color:#e5e7eb;
   cursor:pointer;
+  transition:0.2s;
+}
+
+.suggest-btn:hover {
+  transform: scale(1.05);
 }
 </style>
 
 <div id="chatBox" 
-style="display:none;position:fixed;bottom:90px;right:20px;width:360px;max-width:92vw;height:540px;background:linear-gradient(to bottom,#0b0f14,#0a0a0a);border-radius:14px;overflow:hidden;z-index:99999;box-shadow:0 15px 40px rgba(0,0,0,0.5);font-family:Arial;flex-direction:column;">
+style="display:none;position:fixed;bottom:90px;right:20px;width:360px;max-width:92vw;height:540px;
+background:linear-gradient(180deg,#0b0f14,#07090d);
+border-radius:14px;overflow:hidden;z-index:99999;
+box-shadow:0 15px 40px rgba(0,0,0,0.5);
+font-family:Arial;flex-direction:column;">
 
 <!-- HEADER -->
 <div style="background:#0a0a0a;color:#fff;padding:12px 14px;font-weight:700;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1f2937;">
 <div>
 Ava • Blackwell AI Assistant
-<div style="font-size:11px;color:#22c55e;font-weight:400;">● Online</div>
+<div id="modeTag" style="font-size:11px;color:#22c55e;font-weight:400;">● Online</div>
 </div>
 <div onclick="toggleChat()" style="cursor:pointer;font-size:16px;">✕</div>
 </div>
@@ -710,12 +725,12 @@ Ava • Blackwell AI Assistant
 style="flex:1;padding:10px;overflow-y:auto;font-size:14px;color:#e5e7eb;">
 
 <div style="margin-bottom:10px;">
-Hi 👋 I can help you with demos, pricing, booking, FAQs, or support.
+Hi 👋 I’m Ava — I can help you explore demos, pricing, or book a consultation.
 </div>
 
 </div>
 
-<!-- SUGGESTIONS -->
+<!-- CTA BUTTON AREA -->
 <div id="suggestions" style="display:none;"></div>
 
 <!-- INPUT -->
@@ -733,194 +748,171 @@ Send
 <script>
 
 let chatState = {
-    mode: "idle",
-    userName: localStorage.getItem("ava_name") || "",
-    userEmail: localStorage.getItem("ava_email") || "",
-    collected: {
-        name: !!localStorage.getItem("ava_name"),
-        email: !!localStorage.getItem("ava_email")
-    }
+  mode: "idle"
 };
 
 function getDelay() {
-    return Math.floor(Math.random() * 1000) + 1000;
+  return Math.floor(Math.random() * 900) + 900;
 }
 
 function toggleChat() {
-    const box = document.getElementById("chatBox");
-    box.style.display = box.style.display === "flex" ? "none" : "flex";
+  const box = document.getElementById("chatBox");
+  box.style.display = box.style.display === "flex" ? "none" : "flex";
 }
 
 function showTyping() {
-    const box = document.getElementById("chatMessages");
-    const div = document.createElement("div");
-    div.id = "typing";
-    div.className = "chat-typing";
-    div.innerText = "Ava is typing...";
-    box.appendChild(div);
-    box.scrollTop = box.scrollHeight;
+  const box = document.getElementById("chatMessages");
+  const div = document.createElement("div");
+  div.className = "chat-typing";
+  div.innerText = "Ava is typing...";
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
 }
 
 function hideTyping() {
-    const t = document.getElementById("typing");
-    if (t) t.remove();
+  const t = document.querySelector(".chat-typing");
+  if (t) t.remove();
 }
 
 /* =========================
-   SMART SUGGESTIONS (LINKS)
+   SMART INTENT DETECTION
 ========================= */
-function showSuggestions(items) {
-    const box = document.getElementById("suggestions");
-    box.innerHTML = "";
-    box.style.display = "flex";
+function getIntent(text) {
 
-    items.forEach(i => {
-        const b = document.createElement("button");
-        b.className = "suggest-btn";
-        b.innerHTML = i.label;
-        b.onclick = () => {
-            window.open(i.url || "#", "_blank");
-        };
-        box.appendChild(b);
-    });
-}
+  let score = 0;
 
-function showQuickLinks(type) {
+  if (text.includes("book") || text.includes("appointment") || text.includes("call")) score += 3;
+  if (text.includes("pricing") || text.includes("price")) score += 2;
+  if (text.includes("demo")) score += 2;
+  if (text.includes("urgent") || text.includes("now")) score += 2;
 
-    if (type === "demo") {
-        showSuggestions([
-            { label: "▶ Open Demo", url: "https://bws.tools.blackwellaisolutions.com/demo" }
-        ]);
-    }
-
-    if (type === "pricing") {
-        showSuggestions([
-            { label: "💰 View Pricing Info", url: "https://calendly.com/bws-consultations" }
-        ]);
-    }
-
-    if (type === "book") {
-        showSuggestions([
-            { label: "📅 Book Call", url: "https://calendly.com/bws-consultations" }
-        ]);
-    }
+  if (score >= 3) return "hot";
+  if (score === 2) return "warm";
+  return "cold";
 }
 
 /* =========================
-   ADD MESSAGE
+   CTA SYSTEM
+========================= */
+function showCTA(type) {
+
+  const box = document.getElementById("suggestions");
+  box.style.display = "flex";
+  box.innerHTML = "";
+
+  let btn = document.createElement("button");
+  btn.className = "suggest-btn";
+
+  if (type === "demo") {
+    btn.innerText = "▶ View Demo";
+    btn.onclick = () => window.open("https://bws.tools.blackwellaisolutions.com/demo", "_blank");
+  }
+
+  if (type === "pricing") {
+    btn.innerText = "💰 View Pricing / Book";
+    btn.onclick = () => window.open("https://calendly.com/bws-consultations", "_blank");
+  }
+
+  if (type === "book") {
+    btn.innerText = "📅 Book Appointment";
+    btn.onclick = () => window.open("https://calendly.com/bws-consultations", "_blank");
+  }
+
+  box.appendChild(btn);
+}
+
+/* =========================
+   MESSAGE ENGINE (GRADIENT + BOUNCE)
 ========================= */
 function addMessage(sender, text) {
-    const box = document.getElementById("chatMessages");
 
-    const wrap = document.createElement("div");
-    wrap.style.display = "flex";
-    wrap.style.marginBottom = "10px";
-    wrap.style.justifyContent = sender === "user" ? "flex-end" : "flex-start";
-    wrap.style.animation = "popIn 0.2s ease";
+  const box = document.getElementById("chatMessages");
 
-    const bubble = document.createElement("div");
-    bubble.innerHTML = text;
-    bubble.style.maxWidth = "75%";
-    bubble.style.padding = "10px 12px";
-    bubble.style.borderRadius = "16px";
+  const wrap = document.createElement("div");
+  wrap.style.display = "flex";
+  wrap.style.marginBottom = "10px";
+  wrap.style.justifyContent = sender === "user" ? "flex-end" : "flex-start";
+  wrap.style.animation = "popIn 0.25s ease";
 
-    if (sender === "user") {
-        bubble.style.background = "#2563eb";
-        bubble.style.color = "#fff";
-        bubble.style.borderBottomRightRadius = "6px";
-    } else {
-        bubble.style.background = "#1f2937";
-        bubble.style.color = "#e5e7eb";
-        bubble.style.borderBottomLeftRadius = "6px";
-    }
+  const bubble = document.createElement("div");
+  bubble.innerHTML = text;
+  bubble.style.maxWidth = "75%";
+  bubble.style.padding = "10px 12px";
+  bubble.style.borderRadius = "16px";
+  bubble.style.lineHeight = "1.4";
 
-    wrap.appendChild(bubble);
-    box.appendChild(wrap);
-    box.scrollTop = box.scrollHeight;
+  if (sender === "user") {
+    bubble.style.background = "linear-gradient(135deg,#2563eb,#1d4ed8)";
+    bubble.style.color = "#fff";
+    bubble.style.borderBottomRightRadius = "6px";
+  } else {
+    bubble.style.background = "linear-gradient(135deg,#1f2937,#0f172a)";
+    bubble.style.color = "#e5e7eb";
+    bubble.style.borderBottomLeftRadius = "6px";
+    bubble.style.animation += ", softBounce 3s ease-in-out";
+  }
+
+  wrap.appendChild(bubble);
+  box.appendChild(wrap);
+  box.scrollTop = box.scrollHeight;
 }
 
 /* =========================
-   FLOW LOCK FIX
-========================= */
-function handleFlow(text) {
-
-    if (chatState.mode !== "book") return false;
-    if (chatState.mode === "done") return true;
-
-    if (!chatState.collected.name) {
-        chatState.userName = text;
-        chatState.collected.name = true;
-        localStorage.setItem("ava_name", text);
-
-        setTimeout(() => {
-            hideTyping();
-            addMessage("ava", `Nice to meet you ${text} 👋 What email should we use?`);
-        }, getDelay());
-
-        return true;
-    }
-
-    if (!chatState.collected.email) {
-        chatState.userEmail = text;
-        chatState.collected.email = true;
-        localStorage.setItem("ava_email", text);
-
-        setTimeout(() => {
-            hideTyping();
-            addMessage("ava", `
-                Perfect ${chatState.userName}! 🎉<br><br>
-                We received your request. Our team will reach out soon.<br><br>
-                <a href="https://calendly.com/bws-consultations" target="_blank" style="color:#ef4444;font-weight:600;">Book Call</a>
-            `);
-        }, getDelay());
-
-        chatState.mode = "done";
-        return true;
-    }
-
-    return false;
-}
-
-/* =========================
-   MAIN CHAT
+   MAIN CHAT LOGIC
 ========================= */
 function sendChat() {
 
-    const input = document.getElementById("chatInput");
-    const raw = input.value.trim();
-    const text = raw.toLowerCase();
-    if (!raw) return;
+  const input = document.getElementById("chatInput");
+  const raw = input.value.trim();
+  const text = raw.toLowerCase();
+  if (!raw) return;
 
-    addMessage("user", raw);
+  addMessage("user", raw);
+  showTyping();
 
-    showTyping();
+  const intent = getIntent(text);
 
-    setTimeout(() => {
-        hideTyping();
+  setTimeout(() => {
 
-        if (text.includes("demo")) {
-            addMessage("ava", `Here’s the demo 👇`);
-            showQuickLinks("demo");
-        }
+    hideTyping();
 
-        else if (text.includes("pricing")) {
-            addMessage("ava", "Pricing is custom based on your needs.");
-            showQuickLinks("pricing");
-        }
+    /* HOT INTENT (Sales Mode) */
+    if (intent === "hot") {
 
-        else if (text.includes("book") || text.includes("call")) {
-            chatState.mode = "book";
-            addMessage("ava", "Let’s book a call 📅 What’s your name?");
-            showQuickLinks("book");
-        }
+      addMessage("ava", "Perfect — here’s the fastest way to get started 👇");
 
-        else {
-            addMessage("ava", "I can help with demo, pricing, booking, and support.");
-        }
+      if (text.includes("demo")) showCTA("demo");
+      else if (text.includes("pricing")) showCTA("pricing");
+      else showCTA("book");
 
-    }, getDelay());
+      chatState.mode = "sales";
+      return;
+    }
 
-    input.value = "";
+    /* WARM INTENT (Consultant Mode) */
+    if (intent === "warm") {
+
+      addMessage("ava", "Got it — I can help you with that.");
+
+      if (text.includes("demo")) {
+        showCTA("demo");
+      } else {
+        showCTA("pricing");
+      }
+
+      chatState.mode = "consultant";
+      return;
+    }
+
+    /* COLD INTENT */
+    addMessage("ava", "Hey 👋 Are you looking for a demo, pricing, or to book a call?");
+    showCTA("book");
+
+    chatState.mode = "consultant";
+
+  }, getDelay());
+
+  input.value = "";
 }
 
 </script>
