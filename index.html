@@ -644,7 +644,7 @@ function toggleFaq(id) {
 </footer>
     
 <!-- ========================= -->
-<!-- 💬 AVA CHAT WIDGET (FINAL UPGRADE) -->
+<!-- 💬 AVA CHAT WIDGET (CONVERSION UPGRADE) -->
 <!-- ========================= -->
 
 <style>
@@ -666,9 +666,24 @@ function toggleFaq(id) {
     box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
-#ava-chat-box {
+#ava-preview {
     position: fixed;
     bottom: 90px;
+    right: 20px;
+    background: #111;
+    color: white;
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-family: Arial;
+    z-index: 99998;
+    display: none;
+    opacity: 0.95;
+}
+
+#ava-chat-box {
+    position: fixed;
+    bottom: 140px;
     right: 20px;
     width: 340px;
     height: 520px;
@@ -702,48 +717,48 @@ function toggleFaq(id) {
 
 #ava-input-area {
     display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
     border-top: 1px solid #eee;
     padding: 8px;
-    gap: 6px;
     background: white;
-    align-items: center;
 }
 
 #ava-input {
-    flex: 1;
+    flex: 1 1 100%;
     padding: 10px;
     border: 1px solid #eee;
     border-radius: 8px;
     outline: none;
 }
 
-#ava-send {
+.ava-btn {
+    flex: 1;
+    min-width: 90px;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+#ava-send { background:#0a0a0a; color:white; }
+#ava-email { background:#444; color:white; }
+#ava-book { background:#1f1f1f; color:white; }
+
+/* Welcome popup */
+#ava-welcome {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
     background: #0a0a0a;
     color: white;
-    border: none;
-    padding: 10px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-#ava-email {
-    background: #444;
-    color: white;
-    border: none;
-    padding: 10px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-#ava-voice {
-    background: #222;
-    color: white;
-    border: none;
-    padding: 10px 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-family: Arial;
+    z-index: 99998;
+    display: none;
 }
 </style>
 
@@ -751,6 +766,12 @@ function toggleFaq(id) {
 <div id="ava-chat-toggle" onclick="toggleAvaChat()">
 💬 Chat with AVA
 </div>
+
+<!-- Preview Bubble -->
+<div id="ava-preview">AVA: Hi 👋 Need help with pricing or demos?</div>
+
+<!-- Welcome Popup -->
+<div id="ava-welcome">👋 Hi! I’m AVA — want help with pricing, demos, or booking?</div>
 
 <!-- Chat Box -->
 <div id="ava-chat-box">
@@ -761,21 +782,23 @@ function toggleFaq(id) {
     </div>
 
     <div id="ava-messages">
-        <div><b>AVA:</b> Hi 👋 I’m AVA. I’m here to help with pricing, demos, or booking a consultation.</div>
+        <div><b>AVA:</b> Hi 👋 I’m AVA. I help with pricing, demos, and booking consultations.</div>
     </div>
 
     <div id="ava-input-area">
         <input id="ava-input" placeholder="Type your message..." />
 
-        <button id="ava-email" onclick="window.location.href='mailto:inquiry@blackwellaisolutions.com'">
+        <button class="ava-btn" id="ava-email"
+            onclick="window.location.href='mailto:inquiry@blackwellaisolutions.com'">
             Email
         </button>
 
-        <button id="ava-voice" onclick="toggleVoice()">
-            🔊 Voice
+        <button class="ava-btn" id="ava-book"
+            onclick="window.open('https://calendly.com/bws-consultations','_blank')">
+            Book Call
         </button>
 
-        <button id="ava-send" onclick="sendAvaMessage()">
+        <button class="ava-btn" id="ava-send" onclick="sendAvaMessage()">
             Send
         </button>
     </div>
@@ -784,25 +807,27 @@ function toggleFaq(id) {
 
 <script>
 
-let voiceEnabled = false;
-
 function toggleAvaChat() {
     const box = document.getElementById("ava-chat-box");
     box.style.display = (box.style.display === "flex") ? "none" : "flex";
 }
 
-function toggleVoice() {
-    voiceEnabled = !voiceEnabled;
-    alert("AVA Voice: " + (voiceEnabled ? "ON 🔊" : "OFF 🔇"));
+function showWelcome() {
+    const w = document.getElementById("ava-welcome");
+    const p = document.getElementById("ava-preview");
+
+    setTimeout(() => {
+        w.style.display = "block";
+
+        setTimeout(() => {
+            w.style.display = "none";
+            p.style.display = "block";
+        }, 3000);
+
+    }, 4000);
 }
 
-function speak(text) {
-    if (!voiceEnabled) return;
-    const msg = new SpeechSynthesisUtterance(text.replace(/<[^>]*>/g, ""));
-    msg.rate = 1;
-    msg.pitch = 1;
-    window.speechSynthesis.speak(msg);
-}
+showWelcome();
 
 function sendAvaMessage() {
     const input = document.getElementById("ava-input");
@@ -821,47 +846,41 @@ function sendAvaMessage() {
     input.value = "";
 
     const thinking = document.createElement("div");
-    thinking.id = "ava-thinking";
-    thinking.style.margin = "8px 0";
     thinking.style.fontStyle = "italic";
-    thinking.innerHTML = "AVA is thinking...";
+    thinking.innerHTML = "AVA is thinking about the best option for you...";
     messages.appendChild(thinking);
 
     messages.scrollTop = messages.scrollHeight;
 
     setTimeout(() => {
 
-        if (document.getElementById("ava-thinking")) {
-            document.getElementById("ava-thinking").remove();
-        }
+        thinking.remove();
 
         let reply = "";
 
-        if (lower.includes("price") || lower.includes("cost") || lower.includes("pricing")) {
-            reply = "Pricing depends on your business needs. I can help you book a consultation so we can build a custom package for you.";
+        if (lower.includes("price") || lower.includes("cost")) {
+            reply = "Our pricing is custom-built for your business. I recommend a quick consultation so we can maximize your ROI.";
         }
         else if (lower.includes("demo")) {
-            reply = "Absolutely 👍 You can explore demos or request a live walkthrough anytime with our team.";
+            reply = "We can show you a live demo tailored to your business — it’s the fastest way to understand value.";
         }
         else if (lower.includes("contact") || lower.includes("email")) {
-            reply = "You can reach us anytime at inquiry@blackwellaisolutions.com or use the email button below.";
+            reply = "You can reach us anytime at inquiry@blackwellaisolutions.com or use the Email button below.";
         }
-        else if (lower.includes("book") || lower.includes("consultation") || lower.includes("call")) {
-            reply = 'You can book here: <a href="https://calendly.com/bws-consultations" target="_blank">Schedule Consultation</a>';
+        else if (lower.includes("book") || lower.includes("call")) {
+            reply = "Smart move 👍 Booking a consultation is the fastest way to get a strategy built for your business.";
         }
         else if (lower.includes("services")) {
-            reply = "We help with AI automation, websites, SEO, CRM systems, hosting, and business growth tools.";
+            reply = "We help businesses grow using AI automation, websites, SEO, CRM systems, and conversion tools.";
         }
         else {
-            reply = "Got it 👍 Would you like pricing, a demo, or to book a consultation?";
+            reply = "I can help you with pricing, demos, or booking a consultation — what would you like?";
         }
 
         const bot = document.createElement("div");
         bot.style.margin = "8px 0";
         bot.innerHTML = "<b>AVA:</b> " + reply;
         messages.appendChild(bot);
-
-        speak(reply);
 
         messages.scrollTop = messages.scrollHeight;
 
