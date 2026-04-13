@@ -641,4 +641,98 @@ function toggleFaq(id) {
             </p>
         </div>
     </div>
-</footer></body></html>
+</footer>
+    
+<!-- ========================= -->
+<!-- 💬 BLACKWELL CHAT WIDGET -->
+<!-- ========================= -->
+
+<!-- Floating Button -->
+<div onclick="toggleChat()" 
+style="position:fixed;bottom:20px;right:20px;width:60px;height:60px;background:#0a0a0a;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:99999;font-size:22px;box-shadow:0 10px 25px rgba(0,0,0,0.3);">
+💬
+</div>
+
+<!-- Chat Box -->
+<div id="chatBox" 
+style="display:none;position:fixed;bottom:90px;right:20px;width:340px;height:460px;background:white;border-radius:14px;overflow:hidden;z-index:99999;box-shadow:0 15px 40px rgba(0,0,0,0.25);font-family:Arial;">
+
+<!-- Header -->
+<div style="background:#0a0a0a;color:#fff;padding:12px 14px;font-weight:700;">
+Blackwell AI Assistant
+</div>
+
+<!-- Messages -->
+<div id="chatMessages" style="padding:10px;height:330px;overflow-y:auto;font-size:14px;background:#fafafa;">
+<div><b>AI:</b> Hi 👋 Welcome to Blackwell AI Solutions. Ask about pricing, demos, or booking a consultation.</div>
+</div>
+
+<!-- Input -->
+<div style="display:flex;border-top:1px solid #eee;">
+<input id="chatInput" placeholder="Type your message..." 
+style="flex:1;padding:10px;border:none;outline:none;font-size:14px;">
+<button onclick="sendChat()" style="background:#0a0a0a;color:#fff;border:none;padding:10px 14px;cursor:pointer;">
+Send
+</button>
+</div>
+</div>
+
+<!-- Chat Logic -->
+<script>
+function toggleChat() {
+    const box = document.getElementById('chatBox');
+    box.style.display = box.style.display === 'block' ? 'none' : 'block';
+}
+
+function sendChat() {
+    const input = document.getElementById('chatInput');
+    const messages = document.getElementById('chatMessages');
+
+    if (!input.value.trim()) return;
+
+    // User message
+    const user = document.createElement('div');
+    user.style.marginBottom = "8px";
+    user.innerHTML = "<b>You:</b> " + input.value;
+    messages.appendChild(user);
+
+    let text = input.value.toLowerCase();
+    let reply = "";
+
+    // AI logic (sales focused)
+    if (text.includes("price") || text.includes("cost") || text.includes("pricing")) {
+        reply = "Our pricing depends on your needs. Would you like a free consultation to get a custom quote?";
+    }
+    else if (text.includes("demo")) {
+        reply = "You can view demos or request a live walkthrough with our team.";
+    }
+    else if (text.includes("contact") || text.includes("email")) {
+        reply = "You can reach us anytime at support@blackwellaisolutions.com or book a consultation.";
+    }
+    else if (text.includes("book") || text.includes("call") || text.includes("consultation")) {
+        reply = 'You can book here: <a href="https://calendly.com/bws-consultations" target="_blank">Schedule a Consultation</a>';
+    }
+    else if (text.includes("services")) {
+        reply = "We offer AI tools, web design, SEO, automation, hosting, and business systems. Want recommendations?";
+    }
+    else {
+        reply = "Got it 👍 Would you like pricing, a demo, or to book a consultation?";
+    }
+
+    // Bot message
+    const bot = document.createElement('div');
+    bot.style.marginBottom = "8px";
+    bot.innerHTML = "<b>AI:</b> " + reply;
+    messages.appendChild(bot);
+
+    input.value = "";
+    messages.scrollTop = messages.scrollHeight;
+}
+</script>
+
+<!-- ========================= -->
+<!-- 💬 END CHAT WIDGET -->
+<!-- ========================= -->
+
+</body>
+</html>
