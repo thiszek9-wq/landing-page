@@ -644,7 +644,7 @@ function toggleFaq(id) {
 </footer>
     
 <!-- ========================= -->
-<!-- 💬 BLACKWELL CHAT WIDGET (AVA - TYPING + REALISTIC DELAY) -->
+<!-- 💬 BLACKWELL CHAT WIDGET (FINAL MERGED PRO VERSION) -->
 <!-- ========================= -->
 
 <div onclick="toggleChat()" 
@@ -654,7 +654,7 @@ cursor:pointer;z-index:99999;font-family:Arial;
 box-shadow:0 10px 25px rgba(0,0,0,0.3);
 animation: float 2.5s ease-in-out infinite;">
 
-<div style="font-size:14px;">Chat with Us</div>
+<div style="font-size:14px;">💬 Chat with Us</div>
 
 </div>
 
@@ -672,9 +672,6 @@ color:#e5e7eb;
 padding:10px 12px;
 border-radius:14px;
 margin-bottom:10px;
-display:flex;
-gap:8px;
-align-items:flex-start;
 }
 
 .userBubble {
@@ -684,13 +681,6 @@ padding:10px 12px;
 border-radius:14px;
 margin-bottom:10px;
 text-align:right;
-}
-
-.avatar {
-width:26px;
-height:26px;
-border-radius:50%;
-object-fit:cover;
 }
 
 .optionBtn {
@@ -712,13 +702,50 @@ background:#1f2937;
 font-size:12px;
 color:#9ca3af;
 margin-bottom:8px;
-animation: pulse 1s infinite;
+animation:pulse 1s infinite;
 }
 
 @keyframes pulse {
-0% { opacity:1; }
-50% { opacity:0.4; }
-100% { opacity:1; }
+0% {opacity:1;}
+50% {opacity:0.4;}
+100% {opacity:1;}
+}
+
+/* INLINE BRANDING */
+.inlineBrand {
+display:flex;
+align-items:center;
+gap:6px;
+margin-top:8px;
+font-size:10px;
+color:#9ca3af;
+}
+
+.inlineBrand img {
+width:12px;
+height:12px;
+}
+
+/* FOOTER BRANDING */
+.footerBrand {
+position:absolute;
+bottom:0;
+left:0;
+right:0;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:6px;
+padding:6px;
+font-size:11px;
+color:#9ca3af;
+border-top:1px solid #1f2937;
+background:rgba(0,0,0,0.4);
+}
+
+.footerBrand img {
+width:14px;
+height:14px;
 }
 
 </style>
@@ -730,21 +757,26 @@ z-index:99999;font-family:Arial;flex-direction:column;">
 
 <!-- HEADER -->
 <div style="background:#0a0a0a;color:#fff;padding:12px;
-display:flex;align-items:center;gap:10px;border-bottom:1px solid #1f2937;">
-
-<img src="https://res.cloudinary.com/dxninzgnm/image/upload/v1773699124/Blackwell_FC_Logo_64_x_64_wgc6xa.png" class="avatar">
+display:flex;justify-content:space-between;align-items:center;
+border-bottom:1px solid #1f2937;">
 
 <div>
 <div style="font-weight:700;">Ava • Assistant</div>
 <div style="font-size:11px;color:#22c55e;">● Online</div>
 </div>
 
-<div onclick="toggleChat()" style="margin-left:auto;cursor:pointer;">✕</div>
+<div onclick="toggleChat()" style="cursor:pointer;">✕</div>
 
 </div>
 
 <!-- CHAT -->
 <div id="chatMessages" style="flex:1;padding:10px;overflow-y:auto;"></div>
+
+<!-- FOOTER BRANDING -->
+<div class="footerBrand">
+  <img src="https://res.cloudinary.com/dxninzgnm/image/upload/v1773699124/Blackwell_FC_Logo_64_x_64_wgc6xa.png">
+  Powered by <b style="color:#fff;">Blackwell AI V.1</b>
+</div>
 
 </div>
 
@@ -755,7 +787,7 @@ const box=document.getElementById("chatBox");
 box.style.display=box.style.display==="flex"?"none":"flex";
 }
 
-/* typing indicator */
+/* typing system */
 function showTyping(){
 const box=document.getElementById("chatMessages");
 const div=document.createElement("div");
@@ -771,7 +803,6 @@ const t=document.getElementById("typing");
 if(t) t.remove();
 }
 
-/* messages */
 function addMessage(type,text){
 const box=document.getElementById("chatMessages");
 const div=document.createElement("div");
@@ -779,9 +810,11 @@ const div=document.createElement("div");
 if(type==="ava"){
 div.className="chatBubble";
 div.innerHTML=`
-<img class="avatar" src="https://res.cloudinary.com/dxninzgnm/image/upload/v1773699124/Blackwell_FC_Logo_64_x_64_wgc6xa.png">
-<div>${text}</div>
-`;
+${text}
+<div class="inlineBrand">
+  <img src="https://res.cloudinary.com/dxninzgnm/image/upload/v1773699124/Blackwell_FC_Logo_64_x_64_wgc6xa.png">
+  Powered by Blackwell AI V.1
+</div>`;
 }else{
 div.className="userBubble";
 div.innerHTML=text;
@@ -791,17 +824,14 @@ box.appendChild(div);
 box.scrollTop=box.scrollHeight;
 }
 
-/* delayed Ava response */
 function avaReply(text){
 showTyping();
-
 setTimeout(()=>{
 removeTyping();
 addMessage("ava",text);
 },1200);
 }
 
-/* options */
 function showOptions(options){
 const box=document.getElementById("chatMessages");
 
@@ -819,19 +849,55 @@ box.appendChild(btn);
 });
 }
 
-/* CONTACT */
+/* COPY EMAIL */
+function copyEmail(email){
+navigator.clipboard.writeText(email);
+avaReply("Email copied to clipboard.");
+}
+
+/* CONTACT OPTIONS */
+function contactOptions(email,subject,body){
+
+avaReply("Choose how you'd like to contact:");
+
+setTimeout(()=>{
+
+showOptions([
+{
+label:"📧 Open Email App",
+action:()=>window.location.href=`mailto:${email}?subject=${subject}&body=${body}`
+},
+{
+label:"🌐 Open Gmail",
+action:()=>window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`)
+},
+{
+label:"📋 Copy Email",
+action:()=>copyEmail(email)
+}
+]);
+
+},1200);
+
+}
+
+/* CONTACT FLOW */
 function contactFlow(){
+
 avaReply("Who would you like to contact?");
 
 setTimeout(()=>{
 
 showOptions([
-{label:"Sales",action:()=>window.location.href="mailto:sales@blackwellaisolutions.com"},
-{label:"Support",action:()=>window.location.href="mailto:support@blackwellaisolutions.com"},
-{label:"General",action:()=>window.location.href="mailto:inquiry@blackwellaisolutions.com"}
+{label:"💼 Sales",action:()=>contactOptions("sales@blackwellaisolutions.com","Sales Inquiry","Hi, I'm interested in your services.")},
+{label:"🛠 Support",action:()=>contactOptions("support@blackwellaisolutions.com","Support Request","Hi, I need help.")},
+{label:"📨 General",action:()=>contactOptions("inquiry@blackwellaisolutions.com","General Inquiry","Hi.")},
+{label:"🔒 Security",action:()=>contactOptions("security@blackwellaisolutions.com","Security Report","")},
+{label:"⚠ Abuse",action:()=>contactOptions("abuse@blackwellaisolutions.com","Abuse Report","")}
 ]);
 
-},1300);
+},1200);
+
 }
 
 /* START */
@@ -842,13 +908,14 @@ avaReply("Hi 👋 How can I help you today?");
 setTimeout(()=>{
 
 showOptions([
-{label:"View Demo",action:()=>window.open("https://bws.tools.blackwellaisolutions.com/demo")},
-{label:"Pricing",action:()=>window.open("https://calendly.com/bws-consultations")},
-{label:"Book Appointment",action:()=>window.open("https://calendly.com/bws-consultations")},
-{label:"Contact Team",action:contactFlow}
+{label:"📺 View Demo",action:()=>window.open("https://bws.tools.blackwellaisolutions.com/demo")},
+{label:"💰 Pricing",action:()=>window.open("https://calendly.com/bws-consultations")},
+{label:"📅 Book Appointment",action:()=>window.open("https://calendly.com/bws-consultations")},
+{label:"📨 Contact Team",action:contactFlow}
 ]);
 
 },1400);
+
 }
 
 setTimeout(startChat,800);
