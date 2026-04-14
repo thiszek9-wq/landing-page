@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Libre+Franklin:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="https://res.cloudinary.com/dxninzgnm/image/upload/v1773699124/Blackwell_FC_Logo_64_x_64_wgc6xa.png" type="image/png">
+
     <style>
         body { 
             font-family: 'Libre Franklin', ui-sans-serif, system-ui, sans-serif; 
@@ -18,6 +19,7 @@
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Cormorant Garamond', ui-sans-serif, system-ui, sans-serif;
         }
+
         @keyframes fade-up {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -35,97 +37,95 @@
             50% { transform: translateY(-10px); }
         }
         @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6); }
+            0%, 100% { box-shadow: 0 0 18px rgba(234, 179, 8, 0.25); }
+            50% { box-shadow: 0 0 35px rgba(234, 179, 8, 0.55); }
         }
-        .animate-fade-up {
-            animation: fade-up 0.6s ease-out forwards;
-            opacity: 0;
+
+        /* 🔥 GOLD BUTTON STYLE ONLY */
+        .gold-btn {
+            background: linear-gradient(90deg, #fbbf24, #fde047);
+            color: #000;
+            transition: all 0.25s ease;
         }
-        .animate-fade-in {
-            animation: fade-in 0.6s ease-out forwards;
-            opacity: 0;
+        .gold-btn:hover {
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.6);
+            transform: translateY(-1px);
         }
-        .animate-slide-up {
-            animation: slide-up 0.8s ease-out forwards;
-            opacity: 0;
+
+        .gold-outline {
+            border: 1px solid #fbbf24;
+            color: #fbbf24;
+            transition: all 0.25s ease;
         }
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
-        }
-        .animate-glow {
-            animation: glow 2s ease-in-out infinite;
-        }
-        .scroll-animate {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .scroll-animate.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .gold-outline:hover {
+            background: rgba(234, 179, 8, 0.08);
+            box-shadow: 0 0 18px rgba(234, 179, 8, 0.25);
         }
     </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
-        });
-    </script>
 </head>
-<body class="antialiased bg-stone-950 text-stone-200"><nav class="bg-stone-950 border-stone-800 border-b sticky top-0 z-50 backdrop-blur-lg bg-opacity-95">
+
+<body class="antialiased bg-stone-950 text-stone-200">
+
+<nav class="bg-stone-950 border-stone-800 border-b sticky top-0 z-50 backdrop-blur-lg bg-opacity-95">
     <div class="max-w-7xl mx-auto px-6 py-4">
         <div class="flex items-center justify-between">
+
             <a href="#" class="flex items-center gap-3">
-                <img src="https://res.cloudinary.com/dxninzgnm/image/upload/v1773699124/Blackwell_FC_Logo_64_x_64_wgc6xa.png" alt="BLACKWELL AI SOLUTIONS" class="h-20 w-auto">
+                <img src="https://res.cloudinary.com/dxninzgnm/image/upload/v1773699124/Blackwell_FC_Logo_64_x_64_wgc6xa.png" class="h-20 w-auto">
             </a>
+
             <div class="hidden md:flex items-center gap-8">
-                <a href="#features" class="text-stone-300 hover:text-white text-sm font-medium transition-colors">Features</a>
-                <a href="#pricing" class="text-stone-300 hover:text-white text-sm font-medium transition-colors">Pricing</a>
-                <a href="#faq" class="text-stone-300 hover:text-white text-sm font-medium transition-colors">FAQ</a>
-                 <a href="#faq" class="text-stone-300 hover:text-white text-sm font-medium transition-colors">Contact Us</a>
+                <a href="#features" class="text-stone-300 hover:text-white text-sm font-medium">Features</a>
+                <a href="#pricing" class="text-stone-300 hover:text-white text-sm font-medium">Pricing</a>
+                <a href="#faq" class="text-stone-300 hover:text-white text-sm font-medium">FAQ</a>
+                <a href="#faq" class="text-stone-300 hover:text-white text-sm font-medium">Contact Us</a>
             </div>
-            <a href="https://bws.tools.blackwellaisolutions.com" class="bg-stone-700 hover:bg-stone-600 text-white px-5 py-2.5 rounded-none text-sm font-semibold transition-all duration-200">
+
+            <!-- ONLY COLOR CHANGE -->
+            <a href="https://bws.tools.blackwellaisolutions.com"
+               class="gold-btn px-5 py-2.5 text-sm font-semibold rounded-none">
                 Get Started
             </a>
+
         </div>
     </div>
-</nav><section class="bg-stone-950 relative overflow-hidden">
-    <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-stone-700 to-stone-900 rounded-full opacity-20 blur-3xl"></div>
-        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-stone-700 to-stone-900 rounded-full opacity-10 blur-3xl"></div>
+</nav>
+
+<!-- HERO -->
+<section class="bg-stone-950 relative overflow-hidden">
+
+    <div class="max-w-7xl mx-auto px-6 py-24 lg:py-36 text-center animate-fade-up">
+
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-stone-700 to-stone-900 text-white text-sm font-medium mb-8 shadow-lg">
+            <span>Trusted by 1,000+ customers</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl lg:text-7xl font-light uppercase text-stone-100 mb-8">
+            Elevate Innovate Dominate
+        </h1>
+
+        <p class="text-lg sm:text-xl lg:text-2xl text-stone-400 mb-12">
+            Elite AI solutions crafted to deliver growth and advantage.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+
+            <!-- GOLD BUTTON -->
+            <a href="https://calendly.com/bws-consultations"
+               class="gold-btn px-8 py-4 text-lg font-semibold rounded-none">
+                Book A Consultation
+            </a>
+
+            <!-- OUTLINE GOLD -->
+            <a href="#features"
+               class="gold-outline px-8 py-4 text-lg font-semibold rounded-none">
+                Learn More
+            </a>
+
+        </div>
+
     </div>
-    <div class="max-w-7xl mx-auto px-6 py-24 lg:py-36 relative">
-        <div class="max-w-4xl mx-auto text-center animate-fade-up">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-stone-700 to-stone-900 text-white text-sm font-medium mb-8 shadow-lg">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                </svg>
-                <span>Trusted by 1,000+ customers</span>
-            </div>
-            <h1 class="text-4xl sm:text-5xl lg:text-7xl font-light tracking-wide uppercase text-stone-100 mb-8 leading-[1.1]">
-                Elevate  Innovate  Dominate
-            </h1>
-            <p class="text-lg sm:text-xl lg:text-2xl text-stone-400 mb-12 max-w-2xl mx-auto leading-relaxed font-light">
-                Elite AI solutions crafted to deliver exceptional growth, efficiency, and competitive advantage.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="https://calendly.com/bws-consultations" class="bg-stone-700 hover:bg-stone-600 text-white px-8 py-4 rounded-none text-lg font-semibold transition-all duration-200 flex items-center gap-2 group">
-                    Book A Consultation 
-                    <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                    </svg>
-                </a>
-                <a href="#features" class="bg-transparent hover:bg-stone-800 text-stone-200 border border-stone-700 px-8 py-4 rounded-none text-lg font-semibold transition-all duration-200">
-                    Learn More
-                </a>
-           </div>
+</section>
             <div class="mt-16 flex flex-wrap justify-center items-center gap-8 opacity-60">
                 <span class="text-stone-400 text-sm">Trusted by teams at</span>
                 <div class="flex items-center gap-8">
