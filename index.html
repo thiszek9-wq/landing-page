@@ -644,7 +644,7 @@ function toggleFaq(id) {
 </footer>
     
 <!-- ========================= -->
-<!-- 💬 BLACKWELL CHAT WIDGET (FINAL FULL SYSTEM RESTORE) -->
+<!-- 💬 BLACKWELL CHAT WIDGET (CLICKABLE CONTEXT ENHANCED SYSTEM) -->
 <!-- ========================= -->
 
 <div onclick="toggleChat()" 
@@ -655,9 +655,9 @@ box-shadow:0 10px 25px rgba(0,0,0,0.3);
 animation: float 2.5s ease-in-out infinite;
 display:flex;flex-direction:column;gap:4px;">
 
-<div style="font-size:14px;">💬 Chat with AVA</div>
+<div style="font-size:14px;">💬 Chat with Ava</div>
 
-<!-- (UNCHANGED BRANDING) -->
+<!-- branding unchanged -->
 <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:#9ca3af;">
   <img src="https://res.cloudinary.com/dxninzgnm/image/upload/v1773699124/Blackwell_FC_Logo_64_x_64_wgc6xa.png" style="width:12px;height:12px;">
   Powered by <b style="color:#fff;">Blackwell AI V.1</b>
@@ -699,6 +699,7 @@ border:none;
 background:#111827;
 color:#e5e7eb;
 cursor:pointer;
+text-align:left;
 }
 
 .optionBtn:hover {
@@ -718,7 +719,6 @@ animation:pulse 1s infinite;
 100% {opacity:1;}
 }
 
-/* INLINE BRANDING (UNCHANGED) */
 .inlineBrand {
 display:flex;
 align-items:center;
@@ -733,28 +733,6 @@ width:12px;
 height:12px;
 }
 
-/* FOOTER (UNCHANGED) */
-.footerBrand {
-position:sticky;
-bottom:0;
-left:0;
-right:0;
-display:flex;
-justify-content:center;
-align-items:center;
-gap:6px;
-padding:6px;
-font-size:11px;
-color:#9ca3af;
-border-top:1px solid #1f2937;
-background:rgba(0,0,0,0.6);
-}
-
-.footerBrand img {
-width:14px;
-height:14px;
-}
-
 </style>
 
 <div id="chatBox" 
@@ -762,7 +740,7 @@ style="display:none;position:fixed;bottom:90px;right:20px;width:360px;height:540
 background:#0b0f14;border-radius:14px;overflow:hidden;
 z-index:99999;font-family:Arial;flex-direction:column;">
 
-<!-- HEADER (UNCHANGED) -->
+<!-- HEADER -->
 <div style="background:#0a0a0a;color:#fff;padding:12px;
 display:flex;justify-content:space-between;align-items:center;
 border-bottom:1px solid #1f2937;">
@@ -777,13 +755,7 @@ border-bottom:1px solid #1f2937;">
 </div>
 
 <!-- CHAT -->
-<div id="chatMessages" style="flex:1;padding:10px;overflow-y:auto;padding-bottom:40px;"></div>
-
-<!-- FOOTER (UNCHANGED) -->
-<div class="footerBrand">
-  <img src="https://res.cloudinary.com/dxninzgnm/image/upload/v1773699124/Blackwell_FC_Logo_64_x_64_wgc6xa.png">
-  Powered by <b style="color:#fff;">Blackwell AI V.1</b>
-</div>
+<div id="chatMessages" style="flex:1;padding:10px;overflow-y:auto;"></div>
 
 </div>
 
@@ -794,31 +766,14 @@ const box=document.getElementById("chatBox");
 box.style.display=box.style.display==="flex"?"none":"flex";
 }
 
-/* typing */
-function showTyping(){
-const box=document.getElementById("chatMessages");
-const div=document.createElement("div");
-div.id="typing";
-div.className="typing";
-div.innerText="Ava is typing...";
-box.appendChild(div);
-box.scrollTop=box.scrollHeight;
-}
-
-function removeTyping(){
-const t=document.getElementById("typing");
-if(t) t.remove();
-}
-
-/* messages (UNCHANGED LOGIC) */
+/* messages */
 function addMessage(type,text){
 const box=document.getElementById("chatMessages");
 const div=document.createElement("div");
 
 if(type==="ava"){
 div.className="chatBubble";
-div.innerHTML=`
-${text}
+div.innerHTML=text + `
 <div class="inlineBrand">
   <img src="https://res.cloudinary.com/dxninzgnm/image/upload/v1773699124/Blackwell_FC_Logo_64_x_64_wgc6xa.png">
   Powered by Blackwell AI V.1
@@ -832,21 +787,13 @@ box.appendChild(div);
 box.scrollTop=box.scrollHeight;
 }
 
-function avaReply(text){
-showTyping();
-setTimeout(()=>{
-removeTyping();
-addMessage("ava",text);
-},1200);
-}
-
 function showOptions(options){
 const box=document.getElementById("chatMessages");
 
 options.forEach(opt=>{
 const btn=document.createElement("button");
 btn.className="optionBtn";
-btn.innerText=opt.label;
+btn.innerHTML=opt.label;
 
 btn.onclick=()=>{
 addMessage("user",opt.label);
@@ -857,72 +804,108 @@ box.appendChild(btn);
 });
 }
 
-/* COPY EMAIL */
-function copyEmail(email){
-navigator.clipboard.writeText(email);
-avaReply("Email copied to clipboard.");
-}
+/* DEMO WITH CONTEXT */
+function demoFlow(){
 
-/* EMAIL SYSTEM RESTORED */
-function contactOptions(email,subject,body){
-
-avaReply("Choose how you'd like to contact:");
+addMessage("ava",`
+📺 Demo Overview:<br><br>
+We offer different demo experiences depending on your needs:
+<br><br>
+• Interactive demo (limited features)<br>
+• Full live demo (guided walkthrough)<br>
+• Fully built systems (shown during consultation)<br><br>
+Select an option below:
+`);
 
 setTimeout(()=>{
 
 showOptions([
 {
-label:"📧 Open Email App",
-action:()=>window.location.href=`mailto:${email}?subject=${subject}&body=${body}`
+label:"View Interactive Demo",
+action:()=>window.open("https://bws.tools.blackwellaisolutions.com/demo")
 },
 {
-label:"🌐 Open Gmail",
-action:()=>window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`)
-},
-{
-label:"📋 Copy Email",
-action:()=>copyEmail(email)
+label:"Book Full Demo Call",
+action:()=>window.open("https://calendly.com/bws-consultations")
 }
 ]);
 
-},1200);
+},1000);
 
 }
 
-/* FULL CONTACT FLOW RESTORED */
+/* EMAIL SYSTEM WITH CONTEXT */
 function contactFlow(){
 
-avaReply("Who would you like to contact?");
+addMessage("ava",`
+📨 Contact Channels:<br><br>
+Please choose the appropriate department below. Each team handles specific requests for faster response times.
+`);
 
 setTimeout(()=>{
 
 showOptions([
-{label:"💼 Sales",action:()=>contactOptions("sales@blackwellaisolutions.com","Sales Inquiry","Hi, I'm interested in your services.")},
-{label:"🛠 Support",action:()=>contactOptions("support@blackwellaisolutions.com","Support Request","Hi, I need help.")},
-{label:"📨 General",action:()=>contactOptions("inquiry@blackwellaisolutions.com","General Inquiry","Hi.")},
-{label:"🔒 Security",action:()=>contactOptions("security@blackwellaisolutions.com","Security Report","")},
-{label:"⚠ Abuse",action:()=>contactOptions("abuse@blackwellaisolutions.com","Abuse Report","")}
+{
+label:"💼 Sales – sales@blackwellaisolutions.com",
+action:()=>addMessage("ava",`
+Sales Team:<br>
+sales@blackwellaisolutions.com<br><br>
+For pricing, demos, proposals, and customized package inquiries.
+`)
+},
+{
+label:"📨 General – inquiry@blackwellaisolutions.com",
+action:()=>addMessage("ava",`
+General Inquiries:<br>
+inquiry@blackwellaisolutions.com<br><br>
+For general questions about our services or company.
+`)
+},
+{
+label:"🛠 Support – support@blackwellaisolutions.com",
+action:()=>addMessage("ava",`
+Support Team:<br>
+support@blackwellaisolutions.com<br><br>
+For technical assistance and customer support requests.
+`)
+},
+{
+label:"🔒 Security – security@blackwellaisolutions.com",
+action:()=>addMessage("ava",`
+Security Team:<br>
+security@blackwellaisolutions.com<br><br>
+To report security vulnerabilities or security concerns.
+`)
+},
+{
+label:"⚠ Abuse – abuse@blackwellaisolutions.com",
+action:()=>addMessage("ava",`
+Abuse Team:<br>
+abuse@blackwellaisolutions.com<br><br>
+To report misuse, spam, or policy violations.
+`)
+}
 ]);
 
-},1200);
+},1000);
 
 }
 
-/* START (UNCHANGED) */
+/* START */
 function startChat(){
 
-avaReply("Hi 👋 How can I help you today?");
+addMessage("ava","Hi 👋 How can I help you today?");
 
 setTimeout(()=>{
 
 showOptions([
-{label:"📺 View Demo",action:()=>window.open("https://bws.tools.blackwellaisolutions.com/demo")},
+{label:"📺 View Demo",action:demoFlow},
 {label:"💰 Pricing",action:()=>window.open("https://calendly.com/bws-consultations")},
 {label:"📅 Book Appointment",action:()=>window.open("https://calendly.com/bws-consultations")},
 {label:"📨 Contact Team",action:contactFlow}
 ]);
 
-},1400);
+},1200);
 
 }
 
