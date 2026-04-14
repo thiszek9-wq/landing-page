@@ -545,18 +545,18 @@ Abuse – abuse@blackwellaisolutions.com</p>
 </footer>
     
 <!-- ========================= -->
-<!-- 💬 BWS AVA -->
+<!-- 💬 BLACKWELL CHAT WIDGET (CONTEXT + PRICING + BOOKING ENHANCED) -->
 <!-- ========================= -->
 
 <div onclick="toggleChat()" 
 style="position:fixed;bottom:20px;right:20px;
-padding:12px 14px;background:#111111;color:#fff;border-radius:14px;
+padding:12px 14px;background:#0a0a0a;color:#fff;border-radius:14px;
 cursor:pointer;z-index:99999;font-family:Arial;
 box-shadow:0 10px 25px rgba(0,0,0,0.3),
-0 0 22px rgba(212,175,55,0.3);
+0 0 18px rgba(212,175,55,0.25);
 animation: float 2.5s ease-in-out infinite;
 display:flex;flex-direction:column;gap:4px;
-border:1px solid rgba(212,175,55,0.3);">
+border:1px solid rgba(212,175,55,0.25);">
 
 <div style="font-size:14px;">💬 Chat with Ava</div>
 
@@ -622,39 +622,18 @@ width:12px;
 height:12px;
 }
 
-.emailTools {
-display:flex;
-gap:6px;
-margin-top:8px;
-flex-wrap:wrap;
-}
-
-.emailBtn {
-padding:6px 8px;
-font-size:11px;
-border-radius:8px;
-border:1px solid rgba(212,175,55,0.3);
-background:#0f0f0f;
-color:#e5e7eb;
-cursor:pointer;
-}
-
-.emailBtn:hover {
-background:#1a1a1a;
-}
-
 </style>
 
 <div id="chatBox" 
 style="display:none;position:fixed;bottom:90px;right:20px;width:360px;height:540px;
 background:#0b0b0b;border-radius:14px;overflow:hidden;
 z-index:99999;font-family:Arial;flex-direction:column;
-border:1px solid rgba(212,175,55,0.2);">
+border:1px solid rgba(212,175,55,0.15);">
 
 <!-- HEADER -->
 <div style="background:#0a0a0a;color:#fff;padding:12px;
 display:flex;justify-content:space-between;align-items:center;
-border-bottom:1px solid rgba(212,175,55,0.25);">
+border-bottom:1px solid rgba(212,175,55,0.2);">
 
 <div>
 <div style="font-weight:700;">Ava • BWS Assistant</div>
@@ -687,13 +666,6 @@ div.innerHTML=text + `
 <div class="inlineBrand">
   <img src="https://res.cloudinary.com/dxninzgnm/image/upload/v1773699124/Blackwell_FC_Logo_64_x_64_wgc6xa.png">
   Powered by Blackwell AI V.1
-
-  <div class="emailTools">
-    <button class="emailBtn" onclick="window.open('https://mail.google.com/mail/?view=cm&fs=1&to=sales@blackwellaisolutions.com')">Gmail</button>
-    <button class="emailBtn" onclick="navigator.clipboard.writeText('sales@blackwellaisolutions.com')">Copy Sales</button>
-    <button class="emailBtn" onclick="navigator.clipboard.writeText('support@blackwellaisolutions.com')">Copy Support</button>
-  </div>
-
 </div>`;
 }else{
 div.className="userBubble";
@@ -721,37 +693,97 @@ box.appendChild(btn);
 });
 }
 
-/* CONTACT FLOW (ENHANCED EMAIL UX) */
-function contactFlow(){
+/* DEMO (UNCHANGED LOGIC) */
+function demoFlow(){
 
 addMessage("ava",`
-📨 Contact Channels & Support Teams:<br><br>
-
-Select an option below or use quick email tools above.<br><br>
-
-💼 Sales – sales@blackwellaisolutions.com<br>
-📨 General – inquiry@blackwellaisolutions.com<br>
-🛠 Support – support@blackwellaisolutions.com<br>
-🔒 Security – security@blackwellaisolutions.com<br>
-⚠ Abuse – abuse@blackwellaisolutions.com
+📺 Demo Overview:<br><br>
+We offer different demo experiences:<br><br>
+• Limited Interactive Demo (limited features)<br>
+• Full Live Demo (shown during consultation)<br>
+• Access to Fully Built Systems (purchase required)<br><br>
 `);
 
 setTimeout(()=>{
 
 showOptions([
-{label:"💼 Email Sales",action:()=>window.open("https://mail.google.com/mail/?view=cm&fs=1&to=sales@blackwellaisolutions.com")},
-{label:"🛠 Email Support",action:()=>window.open("https://mail.google.com/mail/?view=cm&fs=1&to=support@blackwellaisolutions.com")},
-{label:"📨 Email General",action:()=>window.open("https://mail.google.com/mail/?view=cm&fs=1&to=inquiry@blackwellaisolutions.com")},
-{label:"📋 Copy All Emails",action:()=>navigator.clipboard.writeText(
-`sales@blackwellaisolutions.com
-support@blackwellaisolutions.com
-inquiry@blackwellaisolutions.com
-security@blackwellaisolutions.com
-abuse@blackwellaisolutions.com`
-)}
+{label:"View Limited Interactive Demo",action:()=>window.open("https://bws.tools.blackwellaisolutions.com/demo")},
+{label:"Book Full Demo Call",action:()=>window.open("https://calendly.com/bws-consultations")}
 ]);
 
-},800);
+},1000);
+
+}
+
+/* 📅 BOOKING ENHANCED */
+function bookingFlow(){
+
+addMessage("ava",`
+📅 Appointment & Growth Planning:<br><br>
+This is where we build every client a tailored growth plan with selected services optimized for revenue growth, automation, and scaling.<br><br>
+During your consultation, we analyze your goals and design a strategy aligned with your business objectives.
+`);
+
+setTimeout(()=>{
+
+showOptions([
+{label:"📅 Book Consultation",action:()=>window.open("https://calendly.com/bws-consultations")}
+]);
+
+},1200);
+
+}
+
+/* 💰 PRICING ENHANCED */
+function pricingFlow(){
+
+addMessage("ava",`
+💰 Pricing Information:<br><br>
+We offer customized packages tailored to each client’s needs to ensure maximum efficiency and results.<br><br>
+• Existing clients with active services may contact Sales for upgrades:<br>
+sales@blackwellaisolutions.com<br><br>
+• New clients are directed to book a consultation first, where we evaluate goals and recommend the best package structure.
+`);
+
+setTimeout(()=>{
+
+showOptions([
+{label:"📅 Book Consultation",action:()=>window.open("https://calendly.com/bws-consultations")},
+{label:"💼 Contact Sales",action:()=>window.location.href="mailto:sales@blackwellaisolutions.com"}
+]);
+
+},1200);
+
+}
+
+/* CONTACT FLOW (UNCHANGED FUNCTIONALITY) */
+function contactFlow(){
+
+addMessage("ava",`
+📨 Contact Channels & Support Teams:<br><br>
+
+Please select the appropriate department below. Each team is specialized to ensure the fastest and most accurate response.<br><br>
+
+💼 Sales – sales@blackwellaisolutions.com<br>
+📨 General Inquiries – inquiry@blackwellaisolutions.com<br>
+🛠 Support Team – support@blackwellaisolutions.com<br>
+🔒 Security – security@blackwellaisolutions.com<br>
+⚠ Abuse – abuse@blackwellaisolutions.com<br><br>
+
+For the fastest response, please contact the team that best matches your request.
+`);
+
+setTimeout(()=>{
+
+showOptions([
+{label:"💼 Sales",action:()=>window.location.href="mailto:sales@blackwellaisolutions.com"},
+{label:"🛠 Support",action:()=>window.location.href="mailto:support@blackwellaisolutions.com"},
+{label:"📨 General",action:()=>window.location.href="mailto:inquiry@blackwellaisolutions.com"},
+{label:"🔒 Security",action:()=>window.location.href="mailto:security@blackwellaisolutions.com"},
+{label:"⚠ Abuse",action:()=>window.location.href="mailto:abuse@blackwellaisolutions.com"}
+]);
+
+},1000);
 
 }
 
