@@ -644,7 +644,7 @@ function toggleFaq(id) {
 </footer>
     
 <!-- ========================= -->
-<!-- 💬 BLACKWELL CHAT WIDGET (CLICKABLE CONTEXT ENHANCED SYSTEM) -->
+<!-- 💬 BLACKWELL CHAT WIDGET (CONTEXT + PRICING + BOOKING ENHANCED) -->
 <!-- ========================= -->
 
 <div onclick="toggleChat()" 
@@ -655,9 +655,8 @@ box-shadow:0 10px 25px rgba(0,0,0,0.3);
 animation: float 2.5s ease-in-out infinite;
 display:flex;flex-direction:column;gap:4px;">
 
-<div style="font-size:14px;">💬 Chat with Ava</div>
+<div style="font-size:14px;">💬 Chat with Us</div>
 
-<!-- branding unchanged -->
 <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:#9ca3af;">
   <img src="https://res.cloudinary.com/dxninzgnm/image/upload/v1773699124/Blackwell_FC_Logo_64_x_64_wgc6xa.png" style="width:12px;height:12px;">
   Powered by <b style="color:#fff;">Blackwell AI V.1</b>
@@ -704,19 +703,6 @@ text-align:left;
 
 .optionBtn:hover {
 background:#1f2937;
-}
-
-.typing {
-font-size:12px;
-color:#9ca3af;
-margin-bottom:8px;
-animation:pulse 1s infinite;
-}
-
-@keyframes pulse {
-0% {opacity:1;}
-50% {opacity:0.4;}
-100% {opacity:1;}
 }
 
 .inlineBrand {
@@ -766,7 +752,6 @@ const box=document.getElementById("chatBox");
 box.style.display=box.style.display==="flex"?"none":"flex";
 }
 
-/* messages */
 function addMessage(type,text){
 const box=document.getElementById("chatMessages");
 const div=document.createElement("div");
@@ -804,87 +789,88 @@ box.appendChild(btn);
 });
 }
 
-/* DEMO WITH CONTEXT */
+/* DEMO (UNCHANGED LOGIC) */
 function demoFlow(){
 
 addMessage("ava",`
 📺 Demo Overview:<br><br>
-We offer different demo experiences depending on your needs:
+We offer different demo experiences:
 <br><br>
 • Interactive demo (limited features)<br>
 • Full live demo (guided walkthrough)<br>
-• Fully built systems (shown during consultation)<br><br>
-Select an option below:
+• Fully built systems shown during consultation<br><br>
 `);
 
 setTimeout(()=>{
 
 showOptions([
-{
-label:"View Interactive Demo",
-action:()=>window.open("https://bws.tools.blackwellaisolutions.com/demo")
-},
-{
-label:"Book Full Demo Call",
-action:()=>window.open("https://calendly.com/bws-consultations")
-}
+{label:"View Interactive Demo",action:()=>window.open("https://bws.tools.blackwellaisolutions.com/demo")},
+{label:"Book Full Demo Call",action:()=>window.open("https://calendly.com/bws-consultations")}
 ]);
 
 },1000);
 
 }
 
-/* EMAIL SYSTEM WITH CONTEXT */
-function contactFlow(){
+/* 📅 BOOKING ENHANCED */
+function bookingFlow(){
 
 addMessage("ava",`
-📨 Contact Channels:<br><br>
-Please choose the appropriate department below. Each team handles specific requests for faster response times.
+📅 Appointment & Growth Planning:<br><br>
+This is where we build every client a tailored growth plan with selected services optimized for revenue growth, automation, and scaling.
+<br><br>
+During your consultation, we analyze your goals and design a strategy aligned with your business objectives.
 `);
 
 setTimeout(()=>{
 
 showOptions([
-{
-label:"💼 Sales – sales@blackwellaisolutions.com",
-action:()=>addMessage("ava",`
-Sales Team:<br>
-sales@blackwellaisolutions.com<br><br>
-For pricing, demos, proposals, and customized package inquiries.
-`)
-},
-{
-label:"📨 General – inquiry@blackwellaisolutions.com",
-action:()=>addMessage("ava",`
-General Inquiries:<br>
-inquiry@blackwellaisolutions.com<br><br>
-For general questions about our services or company.
-`)
-},
-{
-label:"🛠 Support – support@blackwellaisolutions.com",
-action:()=>addMessage("ava",`
-Support Team:<br>
-support@blackwellaisolutions.com<br><br>
-For technical assistance and customer support requests.
-`)
-},
-{
-label:"🔒 Security – security@blackwellaisolutions.com",
-action:()=>addMessage("ava",`
-Security Team:<br>
-security@blackwellaisolutions.com<br><br>
-To report security vulnerabilities or security concerns.
-`)
-},
-{
-label:"⚠ Abuse – abuse@blackwellaisolutions.com",
-action:()=>addMessage("ava",`
-Abuse Team:<br>
-abuse@blackwellaisolutions.com<br><br>
-To report misuse, spam, or policy violations.
-`)
+{label:"📅 Book Consultation",action:()=>window.open("https://calendly.com/bws-consultations")}
+]);
+
+},1200);
+
 }
+
+/* 💰 PRICING ENHANCED */
+function pricingFlow(){
+
+addMessage("ava",`
+💰 Pricing Information:<br><br>
+We offer customized packages tailored to each client’s needs to ensure maximum efficiency and results.
+<br><br>
+• Existing clients with active services may contact Sales for upgrades:<br>
+sales@blackwellaisolutions.com<br><br>
+
+• New clients are directed to book a consultation first, where we evaluate goals and recommend the best package structure.
+`);
+
+setTimeout(()=>{
+
+showOptions([
+{label:"📅 Book Consultation",action:()=>window.open("https://calendly.com/bws-consultations")},
+{label:"💼 Contact Sales",action:()=>window.location.href="mailto:sales@blackwellaisolutions.com"}
+]);
+
+},1200);
+
+}
+
+/* CONTACT FLOW (UNCHANGED FROM PRIOR VERSION) */
+function contactFlow(){
+
+addMessage("ava",`
+📨 Contact Channels:
+`);
+
+setTimeout(()=>{
+
+showOptions([
+{label:"💼 Sales",action:()=>window.location.href="mailto:sales@blackwellaisolutions.com"},
+{label:"🛠 Support",action:()=>window.location.href="mailto:support@blackwellaisolutions.com"},
+{label:"📨 General",action:()=>window.location.href="mailto:inquiry@blackwellaisolutions.com"},
+{label:"🔒 Security",action:()=>window.location.href="mailto:security@blackwellaisolutions.com"},
+{label:"⚠ Abuse",action:()=>window.location.href="mailto:abuse@blackwellaisolutions.com"}
 ]);
 
 },1000);
@@ -900,8 +886,8 @@ setTimeout(()=>{
 
 showOptions([
 {label:"📺 View Demo",action:demoFlow},
-{label:"💰 Pricing",action:()=>window.open("https://calendly.com/bws-consultations")},
-{label:"📅 Book Appointment",action:()=>window.open("https://calendly.com/bws-consultations")},
+{label:"💰 Pricing",action:pricingFlow},
+{label:"📅 Book Appointment",action:bookingFlow},
 {label:"📨 Contact Team",action:contactFlow}
 ]);
 
