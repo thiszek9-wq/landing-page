@@ -16,6 +16,7 @@
     body { 
         font-family: 'Libre Franklin', ui-sans-serif, system-ui, sans-serif; 
     }
+
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Cormorant Garamond', ui-sans-serif, system-ui, sans-serif;
     }
@@ -69,7 +70,7 @@
     }
 
     /* ========================= */
-    /* ✅ TESTIMONIAL SYSTEM (UPGRADED) */
+    /* ✅ TESTIMONIAL SYSTEM (FIXED + RESPONSIVE) */
     /* ========================= */
 
     @keyframes scroll {
@@ -77,9 +78,12 @@
         100% { transform: translateX(-50%); }
     }
 
+    /* DESKTOP MARQUEE */
     .animate-scroll {
-        animation: scroll 80s linear infinite;
         display: flex;
+        gap: 1.5rem;
+        width: max-content;
+        animation: scroll 80s linear infinite;
         will-change: transform;
         transform: translateZ(0);
     }
@@ -88,28 +92,40 @@
         animation-play-state: paused;
     }
 
-    /* mobile swipe support */
-    .touch-pan-x {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scroll-snap-type: x mandatory;
+    /* ========================= */
+    /* 📱 MOBILE FIX (SWIPE ONLY) */
+    /* ========================= */
+    @media (max-width: 768px) {
+
+        .animate-scroll {
+            animation: none;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 10px;
+        }
+
+        .testimonial-card {
+            min-width: 85%;
+            flex-shrink: 0;
+            scroll-snap-align: start;
+        }
     }
 
-    .testimonial-card {
-        scroll-snap-align: start;
-    }
+    /* ========================= */
+    /* ✨ ANIMATIONS */
+    /* ========================= */
 
-    /* NEW: fade in */
     .fade-in {
         animation: fadeIn 1s ease forwards;
     }
 
     @keyframes fadeIn {
-        from {opacity:0; transform: translateY(20px);}
-        to {opacity:1; transform: translateY(0);}
+        from { opacity:0; transform: translateY(20px); }
+        to { opacity:1; transform: translateY(0); }
     }
 
-    /* NEW: star glow */
+    /* ⭐ STAR GLOW */
     .star {
         color:#facc15;
         text-shadow:0 0 8px rgba(250,204,21,0.6);
@@ -132,7 +148,7 @@
                 <a href="#features" class="text-stone-300 hover:text-white text-sm font-medium">Features</a>
                 <a href="#pricing" class="text-stone-300 hover:text-white text-sm font-medium">Pricing</a>
                 <a href="#faq" class="text-stone-300 hover:text-white text-sm font-medium">FAQ</a>
-                <a href="#faq" class="text-stone-300 hover:text-white text-sm font-medium">Blog</a>
+                <a href="#blog" class="text-stone-300 hover:text-white text-sm font-medium">Blog</a>
                 <a href="#faq" class="text-stone-300 hover:text-white text-sm font-medium">Contact Us</a>
             </div>
 
