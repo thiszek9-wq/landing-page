@@ -675,82 +675,94 @@ document.addEventListener("DOMContentLoaded", () => {
 <div class="max-w-7xl mx-auto px-6 relative">
 
     <!-- HEADER -->
-    <div class="text-center mb-10 fade-in">
+    <div class="text-center mb-10">
         <h2 class="text-3xl sm:text-5xl uppercase text-amber-200 mb-4">
             Future of Business Infrastructure
         </h2>
         <p class="text-amber-100/70 max-w-3xl mx-auto">
-            SMBs, Startups, and Enterprise organizations transitioning into AI-powered infrastructure and workflow automation systems.
+            SMBs, Startups, and Enterprise organizations transitioning into automation-ready business infrastructure systems.
         </p>
     </div>
 
-    <!-- STATIC TICKER -->
+    <!-- STATIC INFO STRIP -->
     <div class="mb-10 border border-amber-500/20 bg-stone-900/40 p-4 text-center">
         <div class="text-amber-200 text-sm">
-            🧠 AI impacts global workforce • 📊 Productivity gains from automation • 💼 Higher AI-skilled wages • ⚙️ Reduced operational costs • 🚀 Increased conversions
+            AI adoption is increasing across industries • Automation improves productivity • Businesses are shifting toward unified CRM systems • Workflow optimization reduces operational costs
         </div>
     </div>
 
-    <!-- STATS GRID (FIXED COUNTERS) -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-14 fade-in">
+    <!-- STATS GRID (STATIC - NO COUNTERS) -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-14">
 
         <div class="bg-stone-900 border border-amber-500/20 p-5 text-center">
             <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71" class="w-full h-24 object-cover mb-4 opacity-70">
-            <div class="text-3xl font-bold text-amber-200 counter" data-target="30">0</div>
-            <div class="text-amber-100/60 text-sm">% Productivity Increase</div>
+            <div class="text-3xl font-bold text-amber-200">30%</div>
+            <div class="text-amber-100/60 text-sm">Productivity Increase</div>
         </div>
 
         <div class="bg-stone-900 border border-amber-500/20 p-5 text-center">
             <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b" class="w-full h-24 object-cover mb-4 opacity-70">
-            <div class="text-3xl font-bold text-amber-200 counter" data-target="56">0</div>
-            <div class="text-amber-100/60 text-sm">% AI Wage Premium</div>
+            <div class="text-3xl font-bold text-amber-200">56%</div>
+            <div class="text-amber-100/60 text-sm">AI Wage Premium</div>
         </div>
 
         <div class="bg-stone-900 border border-amber-500/20 p-5 text-center">
             <img src="https://sp-ao.shortpixel.ai/client/to_auto,q_glossy,ret_img/https://www.techfinitive.com/wp-content/uploads/2023/12/Risks-of-AI-in-the-workplace-according-to-HR-jpg.webp" class="w-full h-24 object-cover mb-4 opacity-70">
-            <div class="text-3xl font-bold text-amber-200 counter" data-target="3">0</div>
-            <div class="text-amber-100/60 text-sm">Million Jobs at Risk</div>
+            <div class="text-3xl font-bold text-amber-200">3M+</div>
+            <div class="text-amber-100/60 text-sm">Jobs Impacted by Automation</div>
         </div>
 
         <div class="bg-stone-900 border border-amber-500/20 p-5 text-center">
             <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31" class="w-full h-24 object-cover mb-4 opacity-70">
-            <div class="text-3xl font-bold text-amber-200 counter" data-target="100">0</div>
-            <div class="text-amber-100/60 text-sm">% Workflow Automation</div>
+            <div class="text-3xl font-bold text-amber-200">100%</div>
+            <div class="text-amber-100/60 text-sm">Workflow Optimization Focus</div>
         </div>
 
     </div>
 
-    <!-- BLOG CAROUSEL (EXPANDED) -->
-    <div class="overflow-x-auto snap-x snap-mandatory flex gap-6 pb-6 touch-pan-x animate-scroll">
+    <!-- BLOG CARDS (STATIC - NO CAROUSEL) -->
+    <div class="grid md:grid-cols-3 gap-6">
 
-        <div class="min-w-[320px] snap-start bg-stone-900 border border-amber-500/20 p-6">
-            <h3 class="text-amber-200 text-xl mb-3">SMBs Automation Shift</h3>
-            <p class="text-amber-100/70 text-sm">SMBs are replacing manual workflows with automation to scale without hiring more staff.</p>
+        <div class="bg-stone-900 border border-amber-500/20 p-6">
+            <h3 class="text-amber-200 text-xl mb-3">SMBs Scaling with Automation</h3>
+            <p class="text-amber-100/70 text-sm">
+                SMBs are shifting toward automation-first systems to scale operations without increasing staff overhead.
+            </p>
         </div>
 
-        <div class="min-w-[320px] snap-start bg-stone-900 border border-amber-500/20 p-6">
-            <h3 class="text-amber-200 text-xl mb-3">Startups Scaling Faster</h3>
-            <p class="text-amber-100/70 text-sm">CRM + automation stacks allow startups to handle leads, bookings, and marketing seamlessly.</p>
+        <div class="bg-stone-900 border border-amber-500/20 p-6">
+            <h3 class="text-amber-200 text-xl mb-3">Startups Building Systems</h3>
+            <p class="text-amber-100/70 text-sm">
+                Startups are integrating CRM, automation, and marketing systems to streamline lead management and bookings.
+            </p>
         </div>
 
-        <div class="min-w-[320px] snap-start bg-stone-900 border border-amber-500/20 p-6">
-            <h3 class="text-amber-200 text-xl mb-3">Enterprise Transformation</h3>
-            <p class="text-amber-100/70 text-sm">Enterprises are redesigning workflows around AI augmentation for higher output per employee.</p>
+        <div class="bg-stone-900 border border-amber-500/20 p-6">
+            <h3 class="text-amber-200 text-xl mb-3">Enterprise Infrastructure Shift</h3>
+            <p class="text-amber-100/70 text-sm">
+                Enterprises are restructuring workflows around automation to increase output per employee.
+            </p>
         </div>
 
-        <div class="min-w-[320px] snap-start bg-stone-900 border border-amber-500/20 p-6">
-            <h3 class="text-amber-200 text-xl mb-3">CRM Automation Growth</h3>
-            <p class="text-amber-100/70 text-sm">Automated CRM systems increase conversions and reduce missed leads significantly.</p>
+        <div class="bg-stone-900 border border-amber-500/20 p-6">
+            <h3 class="text-amber-200 text-xl mb-3">CRM Transformation</h3>
+            <p class="text-amber-100/70 text-sm">
+                Automated CRM systems improve response time, lead conversion, and customer retention.
+            </p>
         </div>
 
-        <div class="min-w-[320px] snap-start bg-stone-900 border border-amber-500/20 p-6">
-            <h3 class="text-amber-200 text-xl mb-3">Voice AI Assistants</h3>
-            <p class="text-amber-100/70 text-sm">AI voice systems now handle calls, qualify leads, and book appointments 24/7.</p>
+        <div class="bg-stone-900 border border-amber-500/20 p-6">
+            <h3 class="text-amber-200 text-xl mb-3">Voice AI Systems</h3>
+            <p class="text-amber-100/70 text-sm">
+                AI voice assistants now handle inbound calls, qualify leads, and book appointments automatically.
+            </p>
         </div>
 
-        <div class="min-w-[320px] snap-start bg-stone-900 border border-amber-500/20 p-6">
+        <div class="bg-stone-900 border border-amber-500/20 p-6">
             <h3 class="text-amber-200 text-xl mb-3">Website Conversion Systems</h3>
-            <p class="text-amber-100/70 text-sm">Modern websites now convert visitors into booked appointments automatically.</p>
+            <p class="text-amber-100/70 text-sm">
+                Modern websites now function as conversion engines, turning traffic into booked appointments.
+            </p>
         </div>
 
     </div>
