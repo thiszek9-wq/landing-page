@@ -1218,5 +1218,56 @@ showOptions([
 <!-- 💬 END CHAT WIDGET -->
 <!-- ========================= -->
 
+   <script>
+
+// Disable right-click
+document.addEventListener("contextmenu", function (e) {
+    e.preventDefault();
+});
+
+// Disable inspect shortcuts (F12, Ctrl+Shift+I, Ctrl+U, etc.)
+document.addEventListener("keydown", function (e) {
+    if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && e.key === "I") ||
+        (e.ctrlKey && e.shiftKey && e.key === "J") ||
+        (e.ctrlKey && e.key === "C") ||
+        (e.ctrlKey && e.key === "U")
+    ) {
+        e.preventDefault();
+    }
+});
+
+// Prevent copy (optional extra layer)
+document.addEventListener("copy", function (e) {
+    e.preventDefault();
+});
+
+// Detect DevTools (basic heuristic)
+setInterval(() => {
+    const devtoolsOpen =
+        window.outerWidth - window.innerWidth > 160 ||
+        window.outerHeight - window.innerHeight > 160;
+
+    if (devtoolsOpen) {
+        document.body.innerHTML = `
+            <div style="
+                height:100vh;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                background:#000;
+                color:#fff;
+                font-size:20px;
+                font-family:Arial;
+                text-align:center;">
+                Access Restricted
+            </div>
+        `;
+    }
+}, 1000);
+
+</script>
+    
 </body>
 </html>
