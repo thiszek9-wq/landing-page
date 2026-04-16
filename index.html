@@ -883,6 +883,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     </div>
 </section>
+
 <!-- COUNTER + SMOOTH LOOP ANIMATION -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -904,6 +905,141 @@ document.addEventListener("DOMContentLoaded", () => {
         update();
     });
 });
+</script>
+    <!-- ========================= -->
+<!-- 🚀 ADVANCED AI BUSINESS INTELLIGENCE MODULE -->
+<!-- ========================= -->
+
+<section id="ai-dashboard" class="bg-stone-950 py-24 lg:py-32 relative overflow-hidden">
+
+    <!-- BACKGROUND -->
+    <div class="absolute inset-0 opacity-30">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-amber-500/10 blur-3xl rounded-full"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 relative">
+
+        <!-- TITLE -->
+        <div class="text-center mb-12">
+            <h2 class="text-3xl sm:text-5xl text-amber-200 uppercase mb-4">
+                AI Business Intelligence Dashboard
+            </h2>
+            <p class="text-amber-100/70">
+                Real-time simulation of infrastructure performance, workflow efficiency, and revenue scaling.
+            </p>
+        </div>
+
+        <!-- INDUSTRY FILTER -->
+        <div class="flex flex-wrap justify-center gap-3 mb-10">
+
+            <button onclick="filterIndustry('all')" class="px-4 py-2 bg-amber-500 text-black font-semibold">All</button>
+            <button onclick="filterIndustry('hvac')" class="px-4 py-2 border border-amber-500 text-amber-200">HVAC</button>
+            <button onclick="filterIndustry('plumbing')" class="px-4 py-2 border border-amber-500 text-amber-200">Plumbing</button>
+            <button onclick="filterIndustry('homecare')" class="px-4 py-2 border border-amber-500 text-amber-200">Home Care</button>
+            <button onclick="filterIndustry('saas')" class="px-4 py-2 border border-amber-500 text-amber-200">SaaS</button>
+
+        </div>
+
+        <!-- DASHBOARD GRID -->
+        <div class="grid md:grid-cols-3 gap-6">
+
+            <!-- CARD -->
+            <div id="hvac" class="industryCard bg-stone-900 border border-amber-500/20 p-6">
+                <h3 class="text-amber-200 text-xl mb-2">HVAC Automation Impact</h3>
+                <p class="text-amber-100/70 text-sm mb-4">
+                    Automated booking + CRM follow-ups increase service calls and reduce missed leads.
+                </p>
+                <div class="text-amber-200 text-2xl font-bold">+42% Leads</div>
+            </div>
+
+            <div id="plumbing" class="industryCard bg-stone-900 border border-amber-500/20 p-6">
+                <h3 class="text-amber-200 text-xl mb-2">Plumbing Workflow Optimization</h3>
+                <p class="text-amber-100/70 text-sm mb-4">
+                    Dispatch automation reduces response time and increases conversion rate.
+                </p>
+                <div class="text-amber-200 text-2xl font-bold">-35% Response Time</div>
+            </div>
+
+            <div id="homecare" class="industryCard bg-stone-900 border border-amber-500/20 p-6">
+                <h3 class="text-amber-200 text-xl mb-2">Home Care Scheduling System</h3>
+                <p class="text-amber-100/70 text-sm mb-4">
+                    Automated scheduling improves client retention and reduces admin workload.
+                </p>
+                <div class="text-amber-200 text-2xl font-bold">+28% Retention</div>
+            </div>
+
+            <div id="saas" class="industryCard bg-stone-900 border border-amber-500/20 p-6">
+                <h3 class="text-amber-200 text-xl mb-2">SaaS Scaling Engine</h3>
+                <p class="text-amber-100/70 text-sm mb-4">
+                    CRM + AI onboarding reduces churn and increases lifetime value.
+                </p>
+                <div class="text-amber-200 text-2xl font-bold">+61% LTV</div>
+            </div>
+
+        </div>
+
+        <!-- REVENUE SIMULATOR -->
+        <div class="mt-16 bg-stone-900 border border-amber-500/20 p-8 text-center">
+
+            <h3 class="text-amber-200 text-2xl mb-4">Revenue Growth Simulator</h3>
+
+            <input type="range" min="10" max="200" value="50"
+                   oninput="updateRevenue(this.value)"
+                   class="w-full accent-amber-400">
+
+            <p class="text-amber-100/70 mt-4">Current Monthly Revenue: <span id="revenue">$50,000</span></p>
+
+        </div>
+
+        <!-- WORKFLOW HEATMAP -->
+        <div class="mt-16 grid md:grid-cols-3 gap-4 text-center">
+
+            <div class="bg-amber-500/10 p-6 border border-amber-500/20">
+                <h4 class="text-amber-200 mb-2">Lead Response Time</h4>
+                <div class="text-amber-200 text-3xl font-bold">↓ 68%</div>
+            </div>
+
+            <div class="bg-amber-500/10 p-6 border border-amber-500/20">
+                <h4 class="text-amber-200 mb-2">Workflow Efficiency</h4>
+                <div class="text-amber-200 text-3xl font-bold">↑ 74%</div>
+            </div>
+
+            <div class="bg-amber-500/10 p-6 border border-amber-500/20">
+                <h4 class="text-amber-200 mb-2">Conversion Rate</h4>
+                <div class="text-amber-200 text-3xl font-bold">↑ 52%</div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- ========================= -->
+<!-- JS CONTROLS -->
+<!-- ========================= -->
+
+<script>
+
+function filterIndustry(type){
+    const cards = document.querySelectorAll(".industryCard");
+
+    cards.forEach(card => {
+        if(type === "all"){
+            card.style.display = "block";
+        } else {
+            card.style.display = card.id === type ? "block" : "none";
+        }
+    });
+}
+
+function updateRevenue(value){
+    let base = 50000;
+    let newValue = base * (value / 50);
+
+    document.getElementById("revenue").innerText =
+        "$" + Math.round(newValue).toLocaleString();
+}
+
 </script>
 <section class="bg-stone-950 py-24 lg:py-32 relative overflow-hidden">
     <div class="absolute inset-0">
