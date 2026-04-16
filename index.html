@@ -24,18 +24,22 @@
         from { opacity: 0; transform: translateY(30px); }
         to { opacity: 1; transform: translateY(0); }
     }
+
     @keyframes fade-in {
         from { opacity: 0; }
         to { opacity: 1; }
     }
+
     @keyframes slide-up {
         from { opacity: 0; transform: translateY(50px); }
         to { opacity: 1; transform: translateY(0); }
     }
+
     @keyframes float {
         0%, 100% { transform: translateY(0); }
         50% { transform: translateY(-10px); }
     }
+
     @keyframes glow {
         0%, 100% { box-shadow: 0 0 18px rgba(234, 179, 8, 0.25); }
         50% { box-shadow: 0 0 35px rgba(234, 179, 8, 0.55); }
@@ -47,6 +51,7 @@
         color: #000;
         transition: all 0.25s ease;
     }
+
     .gold-btn:hover {
         box-shadow: 0 0 25px rgba(234, 179, 8, 0.6);
         transform: translateY(-1px);
@@ -57,13 +62,14 @@
         color: #fbbf24;
         transition: all 0.25s ease;
     }
+
     .gold-outline:hover {
         background: rgba(234, 179, 8, 0.08);
         box-shadow: 0 0 18px rgba(234, 179, 8, 0.25);
     }
 
     /* ========================= */
-    /* ✅ ADDED TESTIMONIAL STYLES (NO CHANGES ABOVE) */
+    /* ✅ TESTIMONIAL SYSTEM (UPGRADED) */
     /* ========================= */
 
     @keyframes scroll {
@@ -72,11 +78,25 @@
     }
 
     .animate-scroll {
-        animation: scroll 40s linear infinite;
+        animation: scroll 45s linear infinite;
+        display: flex;
+        will-change: transform;
+        transform: translateZ(0);
     }
 
     .animate-scroll:hover {
         animation-play-state: paused;
+    }
+
+    /* mobile swipe support */
+    .touch-pan-x {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+    }
+
+    .testimonial-card {
+        scroll-snap-align: start;
     }
 
     /* NEW: fade in */
@@ -85,8 +105,8 @@
     }
 
     @keyframes fadeIn {
-        from { opacity:0; transform: translateY(20px);}
-        to { opacity:1; transform: translateY(0);}
+        from {opacity:0; transform: translateY(20px);}
+        to {opacity:1; transform: translateY(0);}
     }
 
     /* NEW: star glow */
@@ -543,78 +563,103 @@ document.addEventListener("DOMContentLoaded", () => {
     <div class="overflow-x-hidden">
         <div class="flex gap-6 animate-scroll w-max touch-pan-x">
 
-            <!-- DUPLICATE BLOCK FOR LOOP -->
-            <!-- START TESTIMONIALS -->
+            <!-- TESTIMONIAL CARDS -->
 
-            <!-- CARD -->
-            <div class="min-w-[300px] bg-stone-900 border border-amber-500/20 p-6 fade-in">
+            <div class="min-w-[320px] testimonial-card bg-stone-900 border border-amber-500/20 p-6 fade-in">
                 <div class="mb-2 star">★★★★★</div>
                 <p class="text-amber-100/80 text-sm mb-4">
-                    We saw a 3x increase in qualified leads within 60 days. The automation alone paid for itself.
+                    We operate an HVAC company and had no proper digital system before Blackwell AI. Their CRM and voice assistant completely changed how we handle leads and scheduling. We now collaborate across our team in real time and close jobs faster.
                 </p>
-                <div class="text-amber-200 font-semibold">Founder David.G</div>
+                <div class="text-amber-200 font-semibold">Founder David G. • HVAC</div>
             </div>
 
-            <div class="min-w-[300px] bg-stone-900 border border-amber-500/20 p-6">
+            <div class="min-w-[320px] testimonial-card bg-stone-900 border border-amber-500/20 p-6">
                 <div class="mb-2 star">★★★★☆</div>
                 <p class="text-amber-100/80 text-sm mb-4">
-                    Strong system overall. Took a bit to fully understand, but results were worth it.
+                    As a plumbing business, we struggled with missed calls and slow follow-ups. The AI voice assistant helped us capture every lead and route them into the CRM instantly. Took a bit of setup time, but performance improved quickly.
                 </p>
-                <div class="text-amber-200 font-semibold">CEO Marcus.T</div>
+                <div class="text-amber-200 font-semibold">CEO Marcus T. • Plumbing</div>
             </div>
 
-            <div class="min-w-[300px] bg-stone-900 border border-amber-500/20 p-6">
+            <div class="min-w-[320px] testimonial-card bg-stone-900 border border-amber-500/20 p-6">
                 <div class="mb-2 star">★★★★★</div>
                 <p class="text-amber-100/80 text-sm mb-4">
-                    Revenue jumped 42% in the first quarter. The strategy is on another level.
+                    We are a home care service and needed more consistent bookings. Their marketing system drove more traffic to our website and significantly increased appointment requests within weeks.
                 </p>
-                <div class="text-amber-200 font-semibold">Founder Alicia.R</div>
+                <div class="text-amber-200 font-semibold">Founder Alicia R. • Home Care</div>
             </div>
 
-            <div class="min-w-[300px] bg-stone-900 border border-amber-500/20 p-6">
+            <div class="min-w-[320px] testimonial-card bg-stone-900 border border-amber-500/20 p-6">
                 <div class="mb-2 star">★★★☆☆</div>
                 <p class="text-amber-100/80 text-sm mb-4">
-                    Good results but required more involvement than expected at the start.
+                    The system works, especially the CRM and automation tools, but we expected a more hands-off experience. Results were decent but required more involvement from our side than expected.
                 </p>
-                <div class="text-amber-200 font-semibold">Director Kevin.L</div>
+                <div class="text-amber-200 font-semibold">Director Kevin L. • Services Business</div>
             </div>
 
-            <div class="min-w-[300px] bg-stone-900 border border-amber-500/20 p-6">
+            <div class="min-w-[320px] testimonial-card bg-stone-900 border border-amber-500/20 p-6">
                 <div class="mb-2 star">★★★★★</div>
                 <p class="text-amber-100/80 text-sm mb-4">
-                    Fully automated our pipeline. Saved us hours daily and increased conversions.
+                    We didn’t even have a proper website before working with Blackwell AI. Now our site not only looks professional but also allows clients to book appointments directly and learn about our services.
                 </p>
-                <div class="text-amber-200 font-semibold">COO Jasmine.K</div>
+                <div class="text-amber-200 font-semibold">COO Jasmine K. • Home Services</div>
             </div>
 
-            <div class="min-w-[300px] bg-stone-900 border border-amber-500/20 p-6">
+            <div class="min-w-[320px] testimonial-card bg-stone-900 border border-amber-500/20 p-6">
                 <div class="mb-2 star">★★★★☆</div>
                 <p class="text-amber-100/80 text-sm mb-4">
-                    Clean execution and solid support team. Definitely a premium service.
+                    The marketing system helped increase traffic to our website and improved booking conversions. The CRM made client management much easier for our small team.
                 </p>
-                <div class="text-amber-200 font-semibold">Founder Omar.S</div>
+                <div class="text-amber-200 font-semibold">Founder Omar S. • Plumbing</div>
             </div>
 
-            <div class="min-w-[300px] bg-stone-900 border border-amber-500/20 p-6">
+            <div class="min-w-[320px] testimonial-card bg-stone-900 border border-amber-500/20 p-6">
                 <div class="mb-2 star">★★★★★</div>
                 <p class="text-amber-100/80 text-sm mb-4">
-                    We scaled from 5k/month to 22k/month revenue in under 90 days.
+                    Our revenue grew over 40% after implementing their AI systems. The voice assistant and CRM integration helped us respond to leads instantly and stay organized.
                 </p>
-                <div class="text-amber-200 font-semibold">CEO Natalie.B</div>
+                <div class="text-amber-200 font-semibold">CEO Natalie B. • HVAC</div>
             </div>
 
-            <div class="min-w-[300px] bg-stone-900 border border-amber-500/20 p-6">
+            <div class="min-w-[320px] testimonial-card bg-stone-900 border border-amber-500/20 p-6">
                 <div class="mb-2 star">★★★★★</div>
                 <p class="text-amber-100/80 text-sm mb-4">
-                    Best investment we’ve made. Everything just works.
+                    Our automation system is extremely efficient. We can now manage multiple service requests and coordinate with our team without losing track of clients.
                 </p>
-                <div class="text-amber-200 font-semibold">Founder Chris.D</div>
+                <div class="text-amber-200 font-semibold">Founder Chris D. • Home Care</div>
             </div>
 
-            <!-- DUPLICATE SAME SET AGAIN FOR INFINITE SCROLL -->
-            <!-- (IMPORTANT for smooth loop) -->
+            <div class="min-w-[320px] testimonial-card bg-stone-900 border border-amber-500/20 p-6">
+                <div class="mb-2 star">★★★☆☆</div>
+                <p class="text-amber-100/80 text-sm mb-4">
+                    The CRM and marketing tools are useful, but onboarding felt a bit overwhelming at first. Once set up, it started delivering consistent leads.
+                </p>
+                <div class="text-amber-200 font-semibold">Operations Manager Ryan P. • Services Business</div>
+            </div>
 
-            <!-- COPY SAME BLOCK BELOW (shortened for space but keep full duplication in your file) -->
+            <div class="min-w-[320px] testimonial-card bg-stone-900 border border-amber-500/20 p-6">
+                <div class="mb-2 star">★★★★★</div>
+                <p class="text-amber-100/80 text-sm mb-4">
+                    Our HVAC company now runs on automated lead capture and instant responses. The voice assistant alone increased our booked appointments significantly.
+                </p>
+                <div class="text-amber-200 font-semibold">Founder Mike S. • HVAC</div>
+            </div>
+
+            <div class="min-w-[320px] testimonial-card bg-stone-900 border border-amber-500/20 p-6">
+                <div class="mb-2 star">★★★★☆</div>
+                <p class="text-amber-100/80 text-sm mb-4">
+                    Good system overall. The marketing and CRM tools helped us organize clients better and improve follow-ups, which boosted conversions.
+                </p>
+                <div class="text-amber-200 font-semibold">CEO Daniel H. • Plumbing</div>
+            </div>
+
+            <div class="min-w-[320px] testimonial-card bg-stone-900 border border-amber-500/20 p-6">
+                <div class="mb-2 star">★★★★★</div>
+                <p class="text-amber-100/80 text-sm mb-4">
+                    We went from almost no online presence to a fully functioning website that brings in daily bookings. This changed how we operate completely.
+                </p>
+                <div class="text-amber-200 font-semibold">Founder Sarah M. • Home Care</div>
+            </div>
 
         </div>
     </div>
